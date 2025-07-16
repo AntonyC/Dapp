@@ -24,9 +24,23 @@ contract Voting {
     }
 }
 
-### 2. ✅ 反转字符串 (Reverse String)
-- 题目描述：反转一个字符串。输入 "abcde"，输出 "edcba"
+//### 2. ✅ 反转字符串 (Reverse String)
+//- 题目描述：反转一个字符串。输入 "abcde"，输出 "edcba"
+contract StringReverser {
 
+    function reverse(string calldata str)pure external  returns (string memory) {
+        bytes memory strBytes = bytes(str); 
+        uint256 len = strBytes.length; 
+
+        for (uint256 i = 0; i < len / 2; i ++){
+            bytes1 temp = strBytes[i];
+            strBytes[i] = strBytes[len - 1 -i];
+            strBytes[len - 1 -i] = temp;
+        }
+
+        return string(strBytes);
+    }
+}
 
 ### 3. ✅  用 solidity 实现整数转罗马数字
 - 题目描述在 https://leetcode.cn/problems/roman-to-integer/description/3.
