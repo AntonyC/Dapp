@@ -42,13 +42,64 @@ contract StringReverser {
     }
 }
 
-### 3. ✅  用 solidity 实现整数转罗马数字
-- 题目描述在 https://leetcode.cn/problems/roman-to-integer/description/3.
+// ### 3. ✅  用 solidity 实现整数转罗马数字
+// - 题目描述在 https://leetcode.cn/problems/roman-to-integer/description/
+// ### 4. ✅  用 solidity 实现罗马数字转数整数
+// - 题目描述在 https://leetcode.cn/problems/integer-to-roman/description/
+contract IntegerRomanConverter {
 
+    string[13] private romanSymbols = [
+        "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
+    ];
+    uint16[13] private romanValues = [
+        1000, 900, 500,  400, 100,   90,  50,   40,  10,    9,   5,   4,   1
+    ];
 
-### 4. ✅  用 solidity 实现罗马数字转数整数
-- 题目描述在 https://leetcode.cn/problems/integer-to-roman/description/
+    function integerToRoman(uint256 num) view external returns (string memory) {
+        require(num > 0 && num <= 3999, "Input must be between 1 and 3999");
 
+        bytes memory result;
+
+        for (uint256 i = 0; i < romanValues.length; i++) {
+            while (num >= romanValues[i]) {
+                num -= romanValues[i];
+                result = bytes.concat(result, bytes(romanSymbols[i]));
+            }
+        }
+
+        return string(result);
+    }
+
+    function romanToInteger(string calldata roman) pure external returns (uint256) {
+        bytes memory romans = bytes(roman);
+        require(romans.length > 0, "Roman numeral cannot be empty");
+
+        uint256 result = charValue(romans, 0);
+
+        for (uint256 i = 1; i < romans.length; i++){
+            if (charValue(romans, i) >= charValue(romans, i - 1)){
+                result += charValue(romans, i);
+            } else{
+                result -= charValue(romans, i);
+            }
+        }
+        return result;
+    }
+
+    function charValue(bytes memory s, uint256 index) private pure returns (uint256) {
+        bytes1 c = s[index];
+
+        if (c == "I") return 1;
+        if (c == "V") return 5;
+        if (c == "X") return 10;
+        if (c == "L") return 50;
+        if (c == "C") return 100;
+        if (c == "D") return 500;
+        if (c == "M") return 1000;
+
+        revert("Invalid character");
+    }
+}
 
 ### 5. ✅  合并两个有序数组 (Merge Sorted Array)
 - 题目描述：将两个有序数组合并为一个有序数组。
