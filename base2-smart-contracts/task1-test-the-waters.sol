@@ -72,15 +72,17 @@ contract IntegerRomanConverter {
 
     function romanToInteger(string calldata roman) pure external returns (uint256) {
         bytes memory romans = bytes(roman);
-        require(romans.length > 0, "Roman numeral cannot be empty");
+        uint256 len = romans.length;
+        require(len > 0, "Roman numeral cannot be empty");
 
-        uint256 result = charValue(romans, 0);
+        uint256 result = charValue(romans, len -1);
 
-        for (uint256 i = 1; i < romans.length; i++){
-            if (charValue(romans, i) >= charValue(romans, i - 1)){
-                result += charValue(romans, i);
+        for (uint256 i = len -1; i > 0; i--){
+            uint256 currentIndex = i - 1;
+            if (charValue(romans, currentIndex) >= charValue(romans, currentIndex + 1)){
+                result += charValue(romans, currentIndex);
             } else{
-                result -= charValue(romans, i);
+                result -= charValue(romans, currentIndex);
             }
         }
         return result;
