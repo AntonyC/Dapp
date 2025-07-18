@@ -125,4 +125,22 @@ contract WarmUp {
     
     //### 6. ✅  二分查找 (Binary Search)
     //- 题目描述：在一个有序数组中查找目标值。
+    function binarySearch(uint256[] memory arr, uint256 target) pure external returns (bool found, uint256 index) {
+        uint256 left = 0;
+        uint256 right = arr.length;
+
+        while (left < right) {
+            uint256 mid = (left + right) / 2;
+
+            if (arr[mid] == target) {
+                return (true, mid);
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        
+        return (false, 0);
+    }
 }
