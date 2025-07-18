@@ -25,7 +25,7 @@ contract WarmUp {
 
     //### 2. ✅ 反转字符串 (Reverse String)
     //- 题目描述：反转一个字符串。输入 "abcde"，输出 "edcba"
-    function reverseString(string calldata str)pure external  returns (string memory) {
+    function reverseString(string calldata str) pure external returns (string memory) {
         bytes memory strBytes = bytes(str); 
         uint256 len = strBytes.length; 
 
@@ -96,7 +96,32 @@ contract WarmUp {
 
     //### 5. ✅  合并两个有序数组 (Merge Sorted Array)
     //- 题目描述：将两个有序数组合并为一个有序数组。
+    function mergeSortedArray(uint256[] calldata arr1, uint256[] calldata arr2) pure external returns(uint256[] memory) {
+        uint256 len1 = arr1.length;
+        uint256 len2 = arr2.length;
+        uint256[] memory mergedArray = new uint256[](len1 + len2);
+        uint256 index1 = 0; 
+        uint256 index2 = 0;
+        uint256 indexMerged = 0;
     
+        while (index1 < len1 && index2 < len2) {
+            if (arr1[index1] < arr2[index2]) {
+                mergedArray[indexMerged++] = arr1[index1++];
+            } else {
+                mergedArray[indexMerged++] = arr2[index2++];
+            }
+        }
+    
+        while (index1 < len1) {
+            mergedArray[indexMerged++] = arr1[index1++];
+        }
+    
+        while (index2 < len2) {
+            mergedArray[indexMerged++] = arr2[index2++];
+        }
+
+        return mergedArray;
+    }
     
     //### 6. ✅  二分查找 (Binary Search)
     //- 题目描述：在一个有序数组中查找目标值。
