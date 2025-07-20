@@ -9,7 +9,7 @@
 // 提示：
 // - 使用 mapping 存储账户余额和授权信息。
 // - 使用 event 定义 Transfer 和 Approval 事件。
-// - 部署到sepolia 测试网，导入到自己的钱包
+// - 部署到sepolia 测试网，导入到自己的钱包: 0xae2e0E2EF908DaD8a375a1881A4C214B109c7d4B
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
