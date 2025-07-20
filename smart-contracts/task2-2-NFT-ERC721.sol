@@ -27,3 +27,27 @@
 // 5. 查看 NFT
 // - 打开 OpenSea 测试网 或 Etherscan 测试网。
 // - 连接你的钱包，查看你铸造的 NFT。
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract SimpleNFT is ERC721URIStorage, Ownable {
+    uint256 private _tokenIds;
+
+    constructor() ERC721("SimpleNFT", "Antony'sNFT") Ownable(msg.sender) {}
+
+    /// @notice 铸造 NFT
+    /// @param recipient 接收 NFT 的地址
+    /// @param tokenURI 元数据链接 (IPFS)
+    function mintNFT(address recipient, string memory tokenURI) public onlyOwner returns (uint256)
+    {
+        _tokenIds += 1;
+        uint256 newItemId = _tokenIds;
+        _mint(recipient, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+        return newItemId;
+    }
+}
