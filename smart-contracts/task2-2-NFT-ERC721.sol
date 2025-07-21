@@ -14,7 +14,9 @@
 // 2. 准备图文数据
 // - 准备一张图片，并将其上传到 IPFS（可以使用 Pinata 或其他工具）。
 // - 创建一个 JSON 文件，描述 NFT 的属性（如名称、描述、图片链接等）。
-// - 将 JSON 文件上传到 IPFS，获取元数据链接。ipfs://bafkreiak6oneza3c3u72kpm34tqnaogginqz7vey24yam2cvpeenuyzdke
+// - 将 JSON 文件上传到 IPFS，获取元数据链接。
+//   ipfs://bafkreiak6oneza3c3u72kpm34tqnaogginqz7vey24yam2cvpeenuyzdke
+//   ipfs://bafkreihqcvyxxxc5kglegakwamsca2pfwkm3vs2aktkni6d6tw3ilhpbs4
 // - JSON文件参考 https://docs.opensea.io/docs/metadata-standards
 // 3. 部署合约到测试网
 // - 在 Remix IDE 中连接 MetaMask，并确保 MetaMask 连接到 Goerli 或 Sepolia 测试网。
