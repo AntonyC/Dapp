@@ -18,7 +18,7 @@
 // - JSON文件参考 https://docs.opensea.io/docs/metadata-standards
 // 3. 部署合约到测试网
 // - 在 Remix IDE 中连接 MetaMask，并确保 MetaMask 连接到 Goerli 或 Sepolia 测试网。
-// - 部署 NFT 合约到测试网，并记录合约地址。
+// - 部署 NFT 合约到测试网，并记录合约地址。0xb447bDec7fC558A43EA2b6DB2e4728E3d2324A30
 // 4. 铸造 NFT
 // - 使用 mintNFT 函数铸造 NFT：
 // - 在 recipient 字段中输入你的钱包地址。
