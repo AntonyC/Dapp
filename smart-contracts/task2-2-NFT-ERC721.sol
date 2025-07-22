@@ -12,7 +12,7 @@
 // - mintNFT 函数：允许用户铸造 NFT，并关联元数据链接（tokenURI）。
 // - 在 Remix IDE 中编译合约。
 // 2. 准备图文数据
-// - 准备一张图片，并将其上传到 IPFS（可以使用 Pinata 或其他工具）。
+// - 准备一张图片，并将其上传到 IPFS（可以使用 Pinata 或其他工具）。https://app.pinata.cloud/ipfs/files
 // - 创建一个 JSON 文件，描述 NFT 的属性（如名称、描述、图片链接等）。
 // - 将 JSON 文件上传到 IPFS，获取元数据链接。
 //   ipfs://bafkreiak6oneza3c3u72kpm34tqnaogginqz7vey24yam2cvpeenuyzdke
