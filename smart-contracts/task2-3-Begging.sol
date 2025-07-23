@@ -1,3 +1,7 @@
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract Begging {
 // ### ✅ 作业3：编写一个讨饭合约
 // 任务目标
 // 1. 使用 Solidity 编写一个合约，允许用户向合约地址发送以太币。
@@ -35,21 +39,11 @@
 // 1. 合约代码：提交 Solidity 合约文件（如 BeggingContract.sol）。
 // 2. 合约地址：提交部署到测试网的合约地址。
 // 3. 测试截图：提交在 Remix 或 Etherscan 上测试合约的截图。
-
-// 额外挑战（可选）
-// 1. 捐赠事件：添加 Donation 事件，记录每次捐赠的地址和金额。
-// 2. 捐赠排行榜：实现一个功能，显示捐赠金额最多的前 3 个地址。
-// 3. 时间限制：添加一个时间限制，只有在特定时间段内才能捐赠。
-
-//SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-contract Begging {
-
     address public owner;
-    mapping (address => uint256) public donations;
+    mapping (address => uint256) private donations;
 
-    constructor() {
+    constructor(uint256 _durationInSeconds) {
+        endTime = _durationInSeconds + block.timestamp;
         owner = msg.sender;
     }
 
@@ -58,12 +52,14 @@ contract Begging {
         _;
     }
 
-    function donate() public payable {
+    function donate() public payable isDonationTime {
         require(msg.value > 0, "Donation must be greater than 0");
         donations[msg.sender] += msg.value;
+        donors.push(msg.sender);
+        emit Donation(msg.sender, msg.value);
     }
 
-    function withdraw() public onlyOwner{
+    function withdraw() public onlyOwner {
         uint256 balance = address(this).balance;
         require(balance > 0, "No balance to withdraw");
         payable(owner).transfer(balance);
@@ -71,5 +67,65 @@ contract Begging {
     
     function getDonate(address _donor) public view returns (uint256) {
         return donations[_donor];
+    }
+
+    receive() external payable isDonationTime {
+        donate();
+    }
+    
+// 额外挑战（可选）
+// 1. 捐赠事件：添加 Donation 事件，记录每次捐赠的地址和金额。
+// 2. 捐赠排行榜：实现一个功能，显示捐赠金额最多的前 3 个地址。
+// 3. 时间限制：添加一个时间限制，只有在特定时间段内才能捐赠。
+
+    // 记录所有捐赠者地址，用于计算排行榜
+    address[] private donors;
+    // 捐赠起止时间
+    uint256 public endTime;
+
+    event Donation(address indexed donor, uint256 amount);
+
+    modifier isDonationTime() {
+        require(block.timestamp <= endTime, "Donations are closed");
+        _;
+    }
+
+        // 返回捐赠最多的前 3 个地址
+    function getTop3Donors() public view returns (address[3] memory topDonors) {
+        uint256[3] memory topAmounts;
+        for (uint256 i = 0; i < donors.length; i++) {
+            uint256 amount = donations[donors[i]];
+            if (amount > topAmounts[0]) {
+                // 插入第一名
+                topAmounts[2] = topAmounts[1];
+                topDonors[2] = topDonors[1];
+                topAmounts[1] = topAmounts[0];
+                topDonors[1] = topDonors[0];
+                topAmounts[0] = amount;
+                topDonors[0] = donors[i];
+            } else if (amount > topAmounts[1]) {
+                // 插入第二名
+                topAmounts[2] = topAmounts[1];
+                topDonors[2] = topDonors[1];
+                topAmounts[1] = amount;
+                topDonors[1] = donors[i];
+            } else if (amount > topAmounts[2]) {
+                // 插入第三名
+                topAmounts[2] = amount;
+                topDonors[2] = donors[i];
+            }
+        }
+    }
+
+    function resetDuration(uint256 _durationInSeconds) public onlyOwner {
+        endTime = block.timestamp + _durationInSeconds;
+    }
+
+    function stopDonation() public onlyOwner {
+    endTime = block.timestamp;
+    }
+
+    function getBlockTimestap() public view returns (uint256) {
+        return block.timestamp;
     }
 }
