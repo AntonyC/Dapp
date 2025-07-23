@@ -45,5 +45,31 @@
 pragma solidity ^0.8.20;
 
 contract Begging {
+
+    address public owner;
+    mapping (address => uint256) public donations;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not contract owner");
+        _;
+    }
+
+    function donate() public payable {
+        require(msg.value > 0, "Donation must be greater than 0");
+        donations[msg.sender] += msg.value;
+    }
+
+    function withdraw() public onlyOwner{
+        uint256 balance = address(this).balance;
+        require(balance > 0, "No balance to withdraw");
+        payable(owner).transfer(balance);
+    }
     
+    function getDonate(address _donor) public view returns (uint256) {
+        return donations[_donor];
+    }
 }
