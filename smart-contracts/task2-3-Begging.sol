@@ -37,7 +37,7 @@ contract Begging {
 
 // 提交内容
 // 1. 合约代码：提交 Solidity 合约文件（如 BeggingContract.sol）。
-// 2. 合约地址：提交部署到测试网的合约地址。 0x2Fe17E0b89688D367901B54016b1137f64e44724
+// 2. 合约地址：提交部署到测试网的合约地址。 0x56e723faa2FB59BD5a0Bb67dB3BD20b33394d1b3
 // 3. 测试截图：提交在 Remix 或 Etherscan 上测试合约的截图。
     address public owner;
     mapping (address => uint256) private donations;
@@ -119,10 +119,6 @@ contract Begging {
 
     function resetDuration(uint256 _durationInSeconds) public onlyOwner {
         endTime = block.timestamp + _durationInSeconds;
-    }
-
-    function stopDonation() public onlyOwner {
-    endTime = block.timestamp;
     }
 
     function getBlockTimestap() public view returns (uint256) {
