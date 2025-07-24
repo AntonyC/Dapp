@@ -7,4 +7,8 @@
    0x975c45dd4355ba9379F4144619ecfC026e7cAa28
    ```
 4. 测试截图：提交在 Remix 或 Etherscan 上测试合约的截图。
-<img width="2092" height="1446" alt="image" src="https://github.com/user-attachments/assets/006155ec-34f6-4255-8ee7-61c7bf983263" />
+   ```
+   https://eth-sepolia.blockscout.com/address/0x975c45dd4355ba9379F4144619ecfC026e7cAa28
+   ```
+<img width="1128" height="636" alt="image" src="https://github.com/user-attachments/assets/252a6a06-1c34-460e-a7d5-c3225e0af400" />
+
