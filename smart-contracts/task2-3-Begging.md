@@ -10,5 +10,4 @@
    ```
    https://eth-sepolia.blockscout.com/address/0x975c45dd4355ba9379F4144619ecfC026e7cAa28
    ```
-<img width="1128" height="636" alt="image" src="https://github.com/user-attachments/assets/252a6a06-1c34-460e-a7d5-c3225e0af400" />
-
+<img width="1059" height="689" alt="image" src="https://github.com/user-attachments/assets/9603ed68-749d-4ad8-a6ca-0185db35ce13" />
