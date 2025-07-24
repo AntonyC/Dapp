@@ -78,7 +78,6 @@ contract Begging {
 
     // 记录所有捐赠者地址，用于计算排行榜
     address[] private donors;
-    // 捐赠起止时间
     uint256 public endTime;
 
     event Donation(address indexed donor, uint256 amount);
@@ -88,7 +87,7 @@ contract Begging {
         _;
     }
 
-        // 返回捐赠最多的前 3 个地址
+    // 返回捐赠最多的前 3 个地址
     function getTop3Donors() public view returns (address[3] memory topDonors) {
         uint256[3] memory topAmounts;
         for (uint256 i = 0; i < donors.length; i++) {
