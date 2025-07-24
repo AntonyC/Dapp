@@ -35,10 +35,6 @@ contract Begging {
 // 3. 功能测试：
 //   - 确保 donate、withdraw 和 getDonation 函数正常工作。
 
-// 提交内容
-// 1. 合约代码：提交 Solidity 合约文件（如 BeggingContract.sol）。
-// 2. 合约地址：提交部署到测试网的合约地址。
-// 3. 测试截图：提交在 Remix 或 Etherscan 上测试合约的截图。
     address public owner;
     mapping (address => uint256) private donations;
 
