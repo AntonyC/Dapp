@@ -11,6 +11,7 @@
 2. 使用 Hardhat 初始化项目：
 
   npx hardhat init
+  
   安装必要的依赖：
     
     npm install @openzeppelin/contracts @chainlink/contracts @nomiclabs/hardhat-ethers hardhat-deploy
