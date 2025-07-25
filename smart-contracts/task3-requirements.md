@@ -9,9 +9,12 @@
 任务步骤
 1. 项目初始化
 2. 使用 Hardhat 初始化项目：
+
   ```npx hardhat init```
+
   安装必要的依赖：
-    ```npm install @openzeppelin/contracts @chainlink/contracts @nomiclabs/hardhat-ethers hardhat-deploy```
+    
+    npm install @openzeppelin/contracts @chainlink/contracts @nomiclabs/hardhat-ethers hardhat-deploy
 4. 实现 NFT 拍卖市场
 5. NFT 合约：
   - 使用 ERC721 标准实现一个 NFT 合约。
