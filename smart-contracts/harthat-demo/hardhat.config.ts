@@ -14,8 +14,12 @@ const config: HardhatUserConfig = {
 
 export default config;
 
-task("greett", "Greets a user")
+task("accounts", "Get all account addresses")
   .addParam("name", "The name of the user")
-  .setAction(async (taskArgs) => {
+  .setAction(async (taskArgs, env) => {
     console.log(`Hello, ${taskArgs.name}!`);
+    const accounts = await env.viem.getWalletClients();
+    for (const account of accounts) {
+      console.log('- ', account.account.address);
+    }
   });
