@@ -9,7 +9,7 @@ describe("SimpleNFT", function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
-  async function deployOneYearLockFixture() {
+  async function simpleNFTFixture() {
 
     const simpleNFT = await hre.viem.deployContract("SimpleNFT");
 
@@ -23,12 +23,12 @@ describe("SimpleNFT", function () {
 
   describe("Deployment", function () {
     it("Should set the right symbol", async function () {
-      const { simpleNFT } = await loadFixture(deployOneYearLockFixture);
+      const { simpleNFT } = await loadFixture(simpleNFTFixture);
       expect(await simpleNFT.read.symbol()).to.equal("Antony'sNFT");
     });
 
     // it("Should set the right owner", async function () {
-    //   const { lock, owner } = await loadFixture(deployOneYearLockFixture);
+    //   const { lock, owner } = await loadFixture(simpleNFTFixture);
 
     //   expect(await lock.read.owner()).to.equal(
     //     getAddress(owner.account.address)
