@@ -13,3 +13,5 @@ npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
 
 [buy usdc](https://app.uniswap.org/)
+
+[price feeds address](https://docs.chain.link/data-feeds/price-feeds/addresses?page=1&testnetPage=1#sepolia-testnet)
