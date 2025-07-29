@@ -28,5 +28,12 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.0.4",
     "viem": "^2.33.1"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^1.4.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "@openzeppelin/contracts-upgradeable": "^5.4.0",
+    "@remix-project/remixd": "^0.6.50",
+    "hardhat-deploy": "^1.0.4"
   }
 }
