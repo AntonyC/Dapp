@@ -196,12 +196,12 @@ contract NftAuction is Initializable, UUPSUpgradeable {
         require(msg.sender == admin, "Only admin can upgrade");
     }
 
-    function onERC721Received(
-        address operator,
-        address from,
-        uint256 tokenId,
-        bytes calldata data
-    ) external pure returns (bytes4) {
-        return this.onERC721Received.selector;
-    }
+    // function onERC721Received(
+    //     address operator,
+    //     address from,
+    //     uint256 tokenId,
+    //     bytes calldata data
+    // ) external pure returns (bytes4) {
+    //     return this.onERC721Received.selector;
+    // }
 }
