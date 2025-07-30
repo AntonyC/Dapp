@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity ^0.8;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -13,23 +13,14 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 import "hardhat/console.sol";
 
 contract NftAuction is Initializable, UUPSUpgradeable {
-    // 结构体
     struct Auction {
-        // 卖家
         address seller;
-        // 拍卖持续时间
         uint256 duration;
-        // 起始价格
         uint256 startPrice;
-        // 开始时间
         uint256 startTime;
-        // 是否结束
         bool ended;
-        // 最高出价者
         address highestBidder;
-        // 最高价格
         uint256 highestBid;
-        // NFT合约地址
         address nftContract;
         // NFT ID
         uint256 tokenId;
@@ -38,11 +29,8 @@ contract NftAuction is Initializable, UUPSUpgradeable {
         address tokenAddress;
     }
 
-    // 状态变量
     mapping(uint256 => Auction) public auctions;
-    // 下一个拍卖ID
     uint256 public nextAuctionId;
-    // 管理员地址
     address public admin;
 
     // AggregatorV3Interface internal priceETHFeed;
@@ -111,7 +99,6 @@ contract NftAuction is Initializable, UUPSUpgradeable {
     }
 
     // 买家参与买单
-    // TODO: ERC20 也能参加
     function placeBid(
         uint256 _auctionID,
         uint256 amount,
@@ -129,9 +116,8 @@ contract NftAuction is Initializable, UUPSUpgradeable {
                 auction.startTime + auction.duration > block.timestamp,
             "Auction has ended"
         );
+
         // 判断出价是否大于当前最高出价
-
-
         uint payValue;
         if (_tokenAddress != address(0)) {
             // 处理 ERC20
@@ -140,7 +126,6 @@ contract NftAuction is Initializable, UUPSUpgradeable {
         } else {
             // 处理 ETH
             amount = msg.value;
-
             payValue = amount * uint(getChainlinkDataFeedLatestAnswer(address(0)));
         }
         
