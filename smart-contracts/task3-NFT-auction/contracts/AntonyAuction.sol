@@ -12,7 +12,7 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 
 import "hardhat/console.sol";
 
-contract NftAuction is Initializable, UUPSUpgradeable {
+contract AntonyAuction is Initializable, UUPSUpgradeable {
     struct Auction {
         address seller;
         uint256 duration;
@@ -37,7 +37,10 @@ contract NftAuction is Initializable, UUPSUpgradeable {
 
     mapping(address => AggregatorV3Interface) public priceFeeds;
 
-    function initialize() public initializer {
+    // function initialize() public initializer {
+    //     admin = msg.sender;
+    // }
+    constructor() {
         admin = msg.sender;
     }
 
