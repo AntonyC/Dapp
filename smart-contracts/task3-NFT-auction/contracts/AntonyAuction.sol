@@ -83,7 +83,7 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 
         // 转移NFT到合约
         // IERC721(_nftAddress).approve(address(this), _tokenId);
-        IERC721(_nftAddress).safeTransferFrom(msg.sender, address(this), _tokenId);
+        // IERC721(_nftAddress).safeTransferFrom(msg.sender, address(this), _tokenId);
 
         auctions[nextAuctionId] = Auction({
             seller: msg.sender,
