@@ -1,0 +1,12 @@
+node_modules
+.idea
+.vscode
+**/build
+**/.vscode
+**/dist
+package-lock.json
+*.md
+*.yaml
+*.yml
+**/cypress
+*.js

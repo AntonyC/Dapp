@@ -20,6 +20,9 @@ importers:
       '@openzeppelin/hardhat-upgrades':
         specifier: ^3.9.1
         version: 3.9.1(@nomicfoundation/hardhat-ethers@3.1.0(ethers@5.8.0)(hardhat@2.26.1(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.0.4))(typescript@5.0.4)))(@nomicfoundation/hardhat-verify@2.1.0(hardhat@2.26.1(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.0.4))(typescript@5.0.4)))(ethers@5.8.0)(hardhat@2.26.1(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.0.4))(typescript@5.0.4))
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
     devDependencies:
       '@nomicfoundation/hardhat-ignition':
         specifier: ^0.15.13
@@ -2880,6 +2883,11 @@ packages:
   prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
+    hasBin: true
+
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+    engines: {node: '>=14'}
     hasBin: true
 
   process-nextick-args@2.0.1:
@@ -7652,6 +7660,8 @@ snapshots:
   prepend-http@2.0.0: {}
 
   prettier@2.8.8: {}
+
+  prettier@3.6.2: {}
 
   process-nextick-args@2.0.1: {}
 
