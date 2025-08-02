@@ -2,7 +2,6 @@ import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
 import path from 'path';
 import fs from 'fs';
-import { ethers, upgrades } from 'hardhat';
 
 interface DeployData {
 	proxyAddress: string;
@@ -13,7 +12,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const { deployer } = await hre.getNamedAccounts();
 	console.log('deployer---:', deployer);
 
-	const deployData = await getDeployData();
+	const deployData = await getDeployData(hre);
 	saveToLocalCache(deployData, 'proxyAuction.json');
 
 	await hre.deployments.save('auctionProxy', {
@@ -34,16 +33,16 @@ function saveToLocalCache(deployData: DeployData, fileName: string) {
 	fs.writeFileSync(storePath, JSON.stringify(deployData));
 }
 
-async function getDeployData(): Promise<DeployData> {
-	const antonyAuction = await ethers.getContractFactory('AntonyAuction');
-	const auctionProxy = await upgrades.deployProxy(antonyAuction, [], {
+async function getDeployData(hre: HardhatRuntimeEnvironment): Promise<DeployData> {
+	const antonyAuction = await hre.ethers.getContractFactory('AntonyAuction');
+	const auctionProxy = await hre.upgrades.deployProxy(antonyAuction, [], {
 		initializer: 'initialize',
 	});
 	await auctionProxy.waitForDeployment();
 
 	const proxyAddress = await auctionProxy.getAddress();
 	console.log('proxyAddress: ', proxyAddress);
-	const implAddress = await upgrades.erc1967.getImplementationAddress(proxyAddress);
+	const implAddress = await hre.upgrades.erc1967.getImplementationAddress(proxyAddress);
 	console.log('impl Address: ', implAddress);
 
 	return {
