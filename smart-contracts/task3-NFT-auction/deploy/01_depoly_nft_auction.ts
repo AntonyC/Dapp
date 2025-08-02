@@ -3,7 +3,7 @@ import { DeployFunction } from 'hardhat-deploy/types';
 import path from 'path';
 import fs from 'fs';
 
-interface DeployData {
+export interface DeployData {
 	proxyAddress: string;
 	implAddress: string;
 	abi: string[];
@@ -25,7 +25,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 };
 
 export default func;
-func.tags = ['AntonyAuction'];
+func.tags = ['DeployAntonyAuction'];
 
 function saveToLocalCache(deployData: DeployData, fileName: string) {
 	const storePath = path.resolve(__dirname, `./.cache/${fileName}`);
