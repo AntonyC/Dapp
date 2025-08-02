@@ -37,13 +37,12 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 
 	mapping(address => AggregatorV3Interface) public priceFeeds;
 
-	// function initialize() public initializer {
-	//     admin = msg.sender;
-	// }
-	constructor() {
+	function initialize() public initializer {
 		admin = msg.sender;
 	}
-
+	// constructor() {
+	// 	admin = msg.sender;
+	// }
 	function setPriceFeed(address tokenAddress, address _priceFeed) public {
 		priceFeeds[tokenAddress] = AggregatorV3Interface(_priceFeed);
 	}
