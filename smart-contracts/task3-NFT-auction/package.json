@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rm": "rm -rf ./artifacts && rm -rf ./cache && rm -rf ./node_modules && rm pnpm-lock.yaml"
   },
   "keywords": [],
   "author": "",
