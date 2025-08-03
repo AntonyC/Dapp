@@ -21,11 +21,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 		// args: [],
 		// log: true,
 	});
-	// await deploy('AntonyAuction', { from: deployer, log: true });
+	await hre.deployments.deploy('AntonyAuction', { from: deployer, log: true });
 };
 
-export default func;
 func.tags = ['DeployAntonyAuction'];
+export default func;
 
 function saveToLocalCache(deployData: DeployData, fileName: string) {
 	const storePath = path.resolve(__dirname, `./.cache/${fileName}`);
@@ -42,6 +42,7 @@ async function getDeployData(hre: HardhatRuntimeEnvironment): Promise<DeployData
 
 	const proxyAddress = await auctionProxy.getAddress();
 	console.log('proxyAddress: ', proxyAddress);
+
 	const implAddress = await hre.upgrades.erc1967.getImplementationAddress(proxyAddress);
 	console.log('impl Address: ', implAddress);
 

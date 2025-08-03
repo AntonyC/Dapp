@@ -10,15 +10,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 	const deployData = await getDeployData('proxyAuction.json');
 	const proxyAddressV2 = await upgradeContract(hre, deployData);
-
+	console.log('--proxyAddressV2: ', proxyAddressV2);
 	await hre.deployments.save('auctionProxyV2', {
 		abi: deployData.abi,
 		address: proxyAddressV2,
 	});
 };
 
-export default func;
 func.tags = ['UpgradeAntonyAuction'];
+export default func;
 
 async function upgradeContract(
 	hre: HardhatRuntimeEnvironment,
