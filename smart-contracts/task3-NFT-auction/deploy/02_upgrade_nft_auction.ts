@@ -14,6 +14,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	await hre.deployments.save('auctionProxyV2', {
 		abi: deployData.abi,
 		address: proxyAddressV2,
+		userdoc: 'Antony02',
 	});
 };
 
