@@ -2,7 +2,7 @@ import { time, loadFixture } from '@nomicfoundation/hardhat-toolbox-viem/network
 import { expect, use } from 'chai';
 import hre from 'hardhat';
 import { getAddress, parseGwei } from 'viem';
-import { TestERC20 } from '../typechain-types';
+// import { TestERC20 } from '../typechain-types';
 
 describe('AntonyAuction', function () {
 	describe('Deployment', function () {
@@ -36,7 +36,7 @@ describe('AntonyAuction', function () {
 
 		// const testERC20 = await hre.viem.deployContract('TestERC20');
 		const TestERC20 = await hre.ethers.getContractFactory('TestERC20');
-		const testERC20 = (await TestERC20.deploy()) as TestERC20;
+		const testERC20 = (await TestERC20.deploy()) as any;
 		await testERC20.waitForDeployment();
 		const UsdcAddress = await testERC20.getAddress();
 
