@@ -6,7 +6,7 @@ import fs from 'fs';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const { deployer } = await hre.getNamedAccounts();
-	console.log('deployer---:', deployer);
+	console.log('--deployer: ', deployer);
 
 	const deployData = await getDeployData('proxyAuction.json');
 	const proxyAddressV2 = await upgradeContract(hre, deployData);

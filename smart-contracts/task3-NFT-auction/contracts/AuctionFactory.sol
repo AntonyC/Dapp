@@ -15,7 +15,7 @@ contract AuctionFactory {
 		address nftContractAddress,
 		uint256 tokenId
 	) external returns (address) {
-		NftAuction auction = new NftAuction();
+		AntonyAuction auction = new AntonyAuction();
 		auction.initialize();
 		auctions.push(address(auction));
 		auctionMap[tokenId] = auction;
