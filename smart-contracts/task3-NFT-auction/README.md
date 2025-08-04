@@ -12,8 +12,10 @@ npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
 ```shell
-1. npx hardhat node
-2. npx hardhat deploy --tags DeployAntonyAuction --network localhost
+1. pnpm i
+2. npx hardhat node
+3. npx hardhat deploy --tags DeployAntonyAuction --network localhost
+4. npx hardhat deploy --tags UpgradeAntonyAuction --network localhost
 ```
 
 
