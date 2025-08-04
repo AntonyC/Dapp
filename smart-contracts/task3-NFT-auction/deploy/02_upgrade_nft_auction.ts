@@ -1,6 +1,6 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
-import { DeployData } from './01_depoly_nft_auction';
+import { type DeployData } from './01_depoly_nft_auction';
 import path from 'path';
 import fs from 'fs';
 
