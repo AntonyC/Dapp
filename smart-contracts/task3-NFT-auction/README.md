@@ -11,6 +11,11 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
+```shell
+1. npx hardhat node
+2. npx hardhat deploy --tags DeployAntonyAuction --network localhost
+```
+
 
 [buy usdc](https://app.uniswap.org/)
 
