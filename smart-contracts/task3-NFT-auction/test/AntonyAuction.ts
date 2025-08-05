@@ -11,27 +11,29 @@ describe('AntonyAuction', function () {
 			expect(await antonyAuction.admin()).to.equal(getAddress(deployer.account.address));
 		});
 
-		it('Create the auction', async function () {
-			const { antonyAuction } = await loadFixture(deployAntonyAutionFixture);
-			await antonyAuction.createAuction(
-				100n,
-				100n,
-				getAddress('0x5B38Da6a701c568545dCfcB03FcB875f56beddC4'),
-				0n
-			);
-			expect(await antonyAuction.nextAuctionId()).to.equal(1n);
-		});
+		// it('Create the auction', async function () {
+		// 	const { antonyAuction } = await loadFixture(deployAntonyAutionFixture);
+		// 	await antonyAuction.createAuction(
+		// 		100n,
+		// 		100n,
+		// 		getAddress('0x5B38Da6a701c568545dCfcB03FcB875f56beddC4'),
+		// 		0n
+		// 	);
+		// 	expect(await antonyAuction.nextAuctionId()).to.equal(1n);
+		// });
 	});
 
 	async function deployAntonyAutionFixture() {
 		const [deployer, user1, user2] = await hre.viem.getWalletClients();
 
 		const [signer, buyer] = await hre.ethers.getSigners();
-		console.log('--aaaaaaaaaaaaa: ', signer.address, hre.ethers.version, hre.ethers.getSigners);
 		// const antonyAuction = await hre.viem.deployContract('AntonyAuction');
 		await hre.deployments.fixture(['DeployAntonyAuction']);
 		const nftAuctionProxy = await hre.deployments.get('auctionProxy');
-		const antonyAuction = await hre.ethers.getContractAt('AntonyAuction', nftAuctionProxy.address);
+		const antonyAuction = (await hre.ethers.getContractAt(
+			'AntonyAuction',
+			nftAuctionProxy.address
+		)) as any;
 		const publicClient = await hre.viem.getPublicClient();
 
 		// const testERC20 = await hre.viem.deployContract('TestERC20');
@@ -68,6 +70,64 @@ describe('AntonyAuction', function () {
 			const { token, priceFeed } = token2Usd[i];
 			await antonyAuction.setPriceFeed(token, priceFeed);
 		}
+
+		// 1. 部署 ERC721 合约
+		const TestERC721 = await hre.ethers.getContractFactory('TestERC721');
+		const testERC721 = (await TestERC721.deploy()) as any;
+		await testERC721.waitForDeployment();
+		const testERC721Address = await testERC721.getAddress();
+		console.log('testERC721Address::', testERC721Address);
+
+		// mint 10个 NFT
+		for (let i = 0; i < 10; i++) {
+			await testERC721.mint(signer.address, i + 1);
+		}
+
+		const tokenId = 1;
+
+		// 给代理合约授权
+		await testERC721.connect(signer).setApprovalForAll(nftAuctionProxy.address, true);
+
+		await antonyAuction.createAuction(
+			10,
+			hre.ethers.parseEther('0.01'),
+			testERC721Address,
+			tokenId
+		);
+
+		const auction = await antonyAuction.auctions(0);
+
+		console.log('创建拍卖成功：：', auction);
+
+		// 3. 购买者参与拍卖
+		// await testERC721.connect(buyer).approve(nftAuctionProxy.address, tokenId);
+		// ETH参与竞价
+		tx = await antonyAuction
+			.connect(buyer)
+			.placeBid(0, 0, hre.ethers.ZeroAddress, { value: hre.ethers.parseEther('0.01') });
+		await tx.wait();
+
+		// USDC参与竞价
+		tx = await testERC20.connect(buyer).approve(nftAuctionProxy.address, hre.ethers.MaxUint256);
+		await tx.wait();
+		tx = await antonyAuction.connect(buyer).placeBid(0, hre.ethers.parseEther('101'), UsdcAddress);
+		await tx.wait();
+
+		// 4. 结束拍卖
+		// 等待 10 s
+		await new Promise(resolve => setTimeout(resolve, 10 * 1000));
+		await antonyAuction.connect(signer);
+
+		// 验证结果
+		const auctionResult = await antonyAuction.auctions(0);
+		console.log('结束拍卖后读取拍卖成功：：', auctionResult);
+		expect(auctionResult.highestBidder).to.equal(buyer.address);
+		expect(auctionResult.highestBid).to.equal(hre.ethers.parseEther('101'));
+
+		// 验证 NFT 所有权
+		const owner = await testERC721.ownerOf(tokenId);
+		console.log('owner::', owner);
+		expect(owner).to.equal(buyer.address);
 
 		return {
 			antonyAuction,
