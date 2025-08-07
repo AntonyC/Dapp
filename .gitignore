@@ -1,2 +1,2 @@
-pnpm-lock.yaml
-smart-contracts/*/deployments/*
+smart-contracts/*/deployments/
+**/.cache/
