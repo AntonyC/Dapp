@@ -7,7 +7,7 @@ import { getAddress, parseGwei } from 'viem';
 describe('AntonyAuction', function () {
 	describe('Deployment', function () {
 		it('Test the admin is owner', async function () {
-			const { deployer } = await loadFixture(deployAntonyAutionFixture);
+			const { signer } = await loadFixture(deployAntonyAutionFixture);
 			// expect(await antonyAuction.admin()).to.equal(getAddress(deployer.account.address));
 		});
 
@@ -24,8 +24,6 @@ describe('AntonyAuction', function () {
 	});
 
 	async function deployAntonyAutionFixture() {
-		const [deployer, user1, user2] = await hre.viem.getWalletClients();
-
 		const [signer, buyer] = await ethers.getSigners();
 		await deployments.fixture(['DeployAntonyAuction']);
 
@@ -130,10 +128,8 @@ describe('AntonyAuction', function () {
 		expect(owner).to.equal(buyer.address);
 
 		return {
+			signer,
 			// antonyAuction,
-			deployer,
-			user1,
-			user2,
 			// publicClient,
 			testERC20,
 		};
