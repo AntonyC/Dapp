@@ -8,6 +8,7 @@ describe('AntonyAuction', function () {
 	describe('Deployment', function () {
 		it('Test the admin is owner', async function () {
 			const { signer } = await loadFixture(deployAntonyAutionFixture);
+			console.log('--signer: ', signer.address);
 			// expect(await antonyAuction.admin()).to.equal(getAddress(deployer.account.address));
 		});
 
@@ -27,11 +28,8 @@ describe('AntonyAuction', function () {
 		const [signer, buyer] = await ethers.getSigners();
 		await deployments.fixture(['DeployAntonyAuction']);
 
-		const nftAuctionProxy = await deployments.get('auctionProxy');
-		const nftAuction = (await ethers.getContractAt(
-			'AntonyAuction',
-			nftAuctionProxy.address
-		)) as any;
+		const auctionProxy = await deployments.get('auctionProxy');
+		const nftAuction = (await ethers.getContractAt('AntonyAuction', auctionProxy.address)) as any;
 
 		const TestERC20 = await ethers.getContractFactory('TestERC20');
 		const testERC20 = (await TestERC20.deploy()) as any;
@@ -83,7 +81,7 @@ describe('AntonyAuction', function () {
 		const tokenId = 1;
 
 		// 给代理合约授权
-		await testERC721.connect(signer).setApprovalForAll(nftAuctionProxy.address, true);
+		await testERC721.connect(signer).setApprovalForAll(auctionProxy.address, true);
 
 		(await nftAuction.createAuction(
 			10,
@@ -105,7 +103,7 @@ describe('AntonyAuction', function () {
 		await tx.wait();
 
 		// USDC参与竞价
-		tx = await testERC20.connect(buyer).approve(nftAuctionProxy.address, ethers.MaxUint256);
+		tx = await testERC20.connect(buyer).approve(auctionProxy.address, ethers.MaxUint256);
 		await tx.wait();
 		tx = await nftAuction.connect(buyer).placeBid(0, ethers.parseEther('101'), UsdcAddress);
 		await tx.wait();
