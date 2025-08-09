@@ -9,9 +9,6 @@ export interface DeployData {
 	abi: string[];
 }
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-	const { deployer } = await hre.getNamedAccounts();
-	console.log('--deployer: ', deployer);
-
 	const deployData = await getDeployData(hre);
 	saveToLocalCache(deployData, 'proxyAuction.json');
 
@@ -20,7 +17,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 		address: deployData.proxyAddress,
 		userdoc: 'Antony01',
 	});
-	// await hre.deployments.deploy('AntonyAuction', { from: deployer, log: true });
 };
 
 func.tags = ['DeployAntonyAuction'];
@@ -33,8 +29,8 @@ function saveToLocalCache(deployData: DeployData, fileName: string) {
 }
 
 async function getDeployData(hre: HardhatRuntimeEnvironment): Promise<DeployData> {
-	const antonyAuction = await hre.ethers.getContractFactory('AntonyAuction');
-	const auctionProxy = await hre.upgrades.deployProxy(antonyAuction, [], {
+	const auctionFactory = await hre.ethers.getContractFactory('AntonyAuction');
+	const auctionProxy = await hre.upgrades.deployProxy(auctionFactory, [], {
 		initializer: 'initialize',
 	});
 	await auctionProxy.waitForDeployment();
@@ -48,6 +44,6 @@ async function getDeployData(hre: HardhatRuntimeEnvironment): Promise<DeployData
 	return {
 		proxyAddress,
 		implAddress,
-		abi: antonyAuction.interface.format(false),
+		abi: auctionFactory.interface.format(false),
 	};
 }
