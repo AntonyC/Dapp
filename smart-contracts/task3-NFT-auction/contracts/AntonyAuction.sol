@@ -126,7 +126,6 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 		// Return the heightest bid
 		if (auction.highestBid > 0) {
 			if (auction.tokenAddress == address(0)) {
-				// auction.tokenAddress = _tokenAddress;
 				payable(auction.highestBidder).transfer(auction.highestBid);
 			} else {
 				// Return the previous ERC20

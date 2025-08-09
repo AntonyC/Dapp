@@ -5,64 +5,24 @@ import { getAddress, parseGwei } from 'viem';
 // import { TestERC20 } from '../typechain-types';
 
 describe('AntonyAuction', function () {
-	describe('Deployment', function () {
-		it('Test the admin is owner', async function () {
-			const { signer } = await loadFixture(deployAntonyAutionFixture);
-			console.log('--signer: ', signer.address);
-			// expect(await antonyAuction.admin()).to.equal(getAddress(deployer.account.address));
-		});
-
-		// it('Create the auction', async function () {
-		// 	const { antonyAuction } = await loadFixture(deployAntonyAutionFixture);
-		// 	await antonyAuction.createAuction(
-		// 		100n,
-		// 		100n,
-		// 		getAddress('0x5B38Da6a701c568545dCfcB03FcB875f56beddC4'),
-		// 		0n
-		// 	);
-		// 	expect(await antonyAuction.nextAuctionId()).to.equal(1n);
-		// });
+	it('Test the admin is owner', async function () {
+		const { signer, antonyAuction } = await loadFixture(deployAntonyAutionFixture);
+		expect(await antonyAuction.admin()).to.equal(signer.address);
 	});
 
-	async function deployAntonyAutionFixture() {
-		const [signer, buyer] = await ethers.getSigners();
-		await deployments.fixture(['DeployAntonyAuction']);
-
-		const auctionProxy = await deployments.get('auctionProxy');
-		const antonyAuction = (await ethers.getContractAt(
-			'AntonyAuction',
-			auctionProxy.address
-		)) as any;
-
-		const testERC20 = await setERC20ToAution(antonyAuction);
-
-		// 1. 部署 ERC721 合约
-		const TestERC721 = await ethers.getContractFactory('TestERC721');
-		const testERC721 = (await TestERC721.deploy()) as any;
-		await testERC721.waitForDeployment();
-		const testERC721Address = await testERC721.getAddress();
-		console.log('testERC721Address::', testERC721Address);
-
-		// mint 10个 NFT
-		for (let i = 0; i < 10; i++) {
-			await testERC721.mint(signer.address, i + 1);
-		}
-
-		const tokenId = 1;
-
-		// 给代理合约授权
-		await testERC721.connect(signer).setApprovalForAll(auctionProxy.address, true);
+	it('Create the auction', async function () {
+		const { antonyAuction, testERC20, testERC721, tokenId, signer, buyer, auctionProxy } =
+			await loadFixture(deployAntonyAutionFixture);
 
 		(await antonyAuction.createAuction(
 			10,
 			ethers.parseEther('0.01'),
-			testERC721Address,
+			await testERC721.getAddress(),
 			tokenId
 		)) as any;
 
-		const auction = await antonyAuction.auctions(0);
-
-		console.log('创建拍卖成功：：', auction);
+		expect((await antonyAuction.auctions(0)).startPrice).to.equal(ethers.parseEther('0.01'));
+		console.log('--Auction created successfully');
 
 		// 3. 购买者参与拍卖
 		//   await testERC721.connect(buyer).approve(nftAuctionProxy.address, tokenId);
@@ -71,6 +31,9 @@ describe('AntonyAuction', function () {
 			.connect(buyer)
 			.placeBid(0, 0, ethers.ZeroAddress, { value: ethers.parseEther('0.01') });
 		await tx.wait();
+		expect((await antonyAuction.auctions(0)).highestBid).to.equal(ethers.parseEther('0.01'));
+		expect((await antonyAuction.auctions(0)).highestBidder).to.equal(buyer.address);
+		console.log('--place Bid successfully');
 
 		// USDC参与竞价
 		tx = await testERC20.connect(buyer).approve(auctionProxy.address, ethers.MaxUint256);
@@ -96,12 +59,34 @@ describe('AntonyAuction', function () {
 		const owner = await testERC721.ownerOf(tokenId);
 		console.log('owner::', owner, buyer.address);
 		expect(owner).to.equal(buyer.address);
+	});
+
+	async function deployAntonyAutionFixture() {
+		const [signer, buyer] = await ethers.getSigners();
+		await deployments.fixture(['DeployAntonyAuction']);
+
+		const auctionProxy = await deployments.get('auctionProxy');
+		const antonyAuction = (await ethers.getContractAt(
+			'AntonyAuction',
+			auctionProxy.address
+		)) as any;
+
+		const testERC20 = await deployERC20();
+		await setPriceFeedToAuction(antonyAuction, testERC20);
+		const testERC721 = await deployERC721();
+
+		const tokenId = 1;
+		// 给代理合约授权
+		await testERC721.connect(signer).setApprovalForAll(auctionProxy.address, true);
 
 		return {
 			signer,
-			// antonyAuction,
-			// publicClient,
+			buyer,
+			antonyAuction,
+			auctionProxy,
+			tokenId,
 			testERC20,
+			testERC721,
 		};
 	}
 });
@@ -110,40 +95,45 @@ async function setPriceToOracle(aggregatorV3: any, price: bigint) {
 	const priceFeedDeploy = await aggregatorV3.deploy(price);
 	const priceFeed = await priceFeedDeploy.waitForDeployment();
 	const priceFeedAddress = await priceFeed.getAddress();
-	console.log('--priceFeedAddress: ', priceFeedAddress);
+	console.log('--priceFeedAddress: ', priceFeedAddress, price);
 	return priceFeedAddress;
 }
 
-async function setERC20ToAution(antonyAuction: any) {
+async function setPriceFeedToAuction(antonyAuction: any, testERC20: any) {
+	const aggregatorV3 = await ethers.getContractFactory('AggregatorV3');
+
+	const priceFeedEthAddress = await setPriceToOracle(aggregatorV3, ethers.parseEther('10000'));
+	await antonyAuction.setPriceFeed(ethers.ZeroAddress, priceFeedEthAddress);
+
+	const priceFeedUSDCAddress = await setPriceToOracle(aggregatorV3, ethers.parseEther('1'));
+	await antonyAuction.setPriceFeed(await testERC20.getAddress(), priceFeedUSDCAddress);
+}
+
+async function deployERC20() {
 	const [signer, buyer] = await ethers.getSigners();
 
 	const testERC20Factory = await ethers.getContractFactory('TestERC20');
 	const testERC20 = (await testERC20Factory.deploy()) as any;
 	await testERC20.waitForDeployment();
-	const usdcAddress = await testERC20.getAddress();
 
 	let tx = await testERC20.connect(signer).transfer(buyer, ethers.parseEther('1000'));
 	await tx.wait();
 
-	const aggregatorV3 = await ethers.getContractFactory('AggregatorV3');
-	const priceFeedEthAddress = await setPriceToOracle(aggregatorV3, ethers.parseEther('10000'));
-	const priceFeedUSDCAddress = await setPriceToOracle(aggregatorV3, ethers.parseEther('1'));
+	return testERC20;
+}
 
-	const token2Usd = [
-		{
-			token: ethers.ZeroAddress,
-			priceFeed: priceFeedEthAddress,
-		},
-		{
-			token: usdcAddress,
-			priceFeed: priceFeedUSDCAddress,
-		},
-	];
+async function deployERC721() {
+	const [signer] = await ethers.getSigners();
 
-	for (let i = 0; i < token2Usd.length; i++) {
-		const { token, priceFeed } = token2Usd[i];
-		await antonyAuction.setPriceFeed(token, priceFeed);
+	// 1. 部署 ERC721 合约
+	const TestERC721 = await ethers.getContractFactory('TestERC721');
+	const testERC721 = (await TestERC721.deploy()) as any;
+	await testERC721.waitForDeployment();
+
+	// mint 10个 NFT
+	for (let i = 0; i < 10; i++) {
+		await testERC721.mint(signer.address, i + 1);
 	}
 
-	return testERC20;
+	return testERC721;
 }
