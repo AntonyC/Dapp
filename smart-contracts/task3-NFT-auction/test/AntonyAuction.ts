@@ -10,9 +10,19 @@ describe('AntonyAuction', function () {
 		expect(signer.address).to.equal(await antonyAuction.admin());
 	});
 
+	it('Test price feed', async function () {
+		const { antonyAuction, testERC20 } = await loadFixture(deployAntonyAutionFixture);
+
+		expect(ethers.parseEther('10000')).to.equal(
+			await antonyAuction.getChainlinkDataFeedLatestAnswer(ethers.ZeroAddress)
+		);
+		expect(ethers.parseEther('1')).to.equal(
+			await antonyAuction.getChainlinkDataFeedLatestAnswer(await testERC20.getAddress())
+		);
+	});
+
 	it('Test auction flow', async function () {
 		const ONE_WEEK_IN_SECS = 7 * 24 * 60 * 60;
-		const unlockTime = BigInt((await time.latest()) + ONE_WEEK_IN_SECS + 10);
 		const tokenId = 1;
 
 		const { antonyAuction, testERC20, testERC721, signer, buyer1, buyer2, auctionProxy } =
@@ -52,7 +62,7 @@ describe('AntonyAuction', function () {
 		console.log('--place USDC Bid successfully');
 
 		// 4. End auction
-		await time.increaseTo(unlockTime);
+		await time.increaseTo((await antonyAuction.auctions(0)).startTime + BigInt(ONE_WEEK_IN_SECS));
 		await antonyAuction.connect(signer).endAuction(0);
 
 		// 5. Test results

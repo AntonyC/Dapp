@@ -140,8 +140,6 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 
 	function endAuction(uint256 _auctionID) external {
 		Auction storage auction = auctions[_auctionID];
-
-		console.log('endAuction', auction.startTime, auction.duration, block.timestamp);
 		require(
 			!auction.ended && (auction.startTime + auction.duration) <= block.timestamp,
 			'Auction has not ended'
