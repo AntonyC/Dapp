@@ -132,8 +132,7 @@ async function getDeployedContracts() {
 async function setPriceToOracle(aggregatorV3: any, price: bigint) {
 	const priceFeedDeploy = await aggregatorV3.deploy(price);
 	const priceFeed = await priceFeedDeploy.waitForDeployment();
-	const priceFeedAddress = await priceFeed.getAddress();
-	return priceFeedAddress;
+	return await priceFeed.getAddress();
 }
 
 async function setPriceFeedToAuction(antonyAuction: any, testERC20: any) {
@@ -156,8 +155,8 @@ async function deployERC20() {
 
 async function deployERC721() {
 	const [signer] = await ethers.getSigners();
-	const TestERC721 = await ethers.getContractFactory('TestERC721');
-	const testERC721 = (await TestERC721.deploy()) as any;
+	const testERC721Factory = await ethers.getContractFactory('TestERC721');
+	const testERC721 = (await testERC721Factory.deploy()) as any;
 	await testERC721.waitForDeployment();
 
 	// mint 10 NFT
