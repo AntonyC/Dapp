@@ -156,7 +156,7 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 	}
 
 	function _authorizeUpgrade(address) internal view override {
-		console.log('-- _authorizeUpgrade called');
+		console.log('--_authorizeUpgrade called');
 		require(msg.sender == admin, 'Only admin can upgrade');
 	}
 
@@ -166,7 +166,7 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 		uint256 tokenId,
 		bytes calldata data
 	) external pure returns (bytes4) {
-		console.log('--: onERC721Received', operator, from, tokenId);
+		console.log('--onERC721Received: ', operator, from, tokenId);
 		return this.onERC721Received.selector;
 	}
 }

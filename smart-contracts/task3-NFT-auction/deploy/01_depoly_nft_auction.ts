@@ -9,7 +9,8 @@ export interface DeployData {
 	abi: string[];
 }
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-	const deployData = await getDeployData(hre);
+	console.log('--Start DeployAntonyAuction');
+	const deployData = await deployByUUPSUpgradeable(hre);
 	saveToLocalCache(deployData, 'proxyAuction.json');
 
 	await hre.deployments.save('auctionProxy', {
@@ -28,22 +29,22 @@ function saveToLocalCache(deployData: DeployData, fileName: string) {
 	fs.writeFileSync(storePath, JSON.stringify(deployData));
 }
 
-async function getDeployData(hre: HardhatRuntimeEnvironment): Promise<DeployData> {
-	const auctionFactory = await hre.ethers.getContractFactory('AntonyAuction');
-	const auctionProxy = await hre.upgrades.deployProxy(auctionFactory, [], {
+async function deployByUUPSUpgradeable(hre: HardhatRuntimeEnvironment): Promise<DeployData> {
+	const antonyAuctionFactory = await hre.ethers.getContractFactory('AntonyAuction');
+	const auctionProxy = await hre.upgrades.deployProxy(antonyAuctionFactory, [], {
 		initializer: 'initialize',
 	});
 	await auctionProxy.waitForDeployment();
 
 	const proxyAddress = await auctionProxy.getAddress();
-	console.log('proxyAddress: ', proxyAddress);
+	console.log('--proxyAddress: ', proxyAddress);
 
 	const implAddress = await hre.upgrades.erc1967.getImplementationAddress(proxyAddress);
-	console.log('impl Address: ', implAddress);
+	console.log('--impl Address: ', implAddress);
 
 	return {
 		proxyAddress,
 		implAddress,
-		abi: auctionFactory.interface.format(false),
+		abi: antonyAuctionFactory.interface.format(false),
 	};
 }

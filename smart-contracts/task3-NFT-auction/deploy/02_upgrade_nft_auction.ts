@@ -5,12 +5,9 @@ import path from 'path';
 import fs from 'fs';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-	const { deployer } = await hre.getNamedAccounts();
-	console.log('--deployer: ', deployer);
-
+	console.log('--Start UpgradeAntonyAuction');
 	const deployData = await getDeployData('proxyAuction.json');
 	const proxyAddressV2 = await upgradeContract(hre, deployData);
-	console.log('--proxyAddressV2: ', proxyAddressV2);
 	await hre.deployments.save('auctionProxyV2', {
 		abi: deployData.abi,
 		address: proxyAddressV2,

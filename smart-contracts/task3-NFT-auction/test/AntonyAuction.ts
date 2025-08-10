@@ -1,10 +1,13 @@
 import { time, loadFixture } from '@nomicfoundation/hardhat-toolbox-viem/network-helpers';
 import { expect, use } from 'chai';
-import hre, { ethers, deployments } from 'hardhat';
+import hre, { ethers, deployments, upgrades } from 'hardhat';
 import { getAddress, getContract, parseGwei } from 'viem';
 // import { TestERC20 } from '../typechain-types';
 
 describe('AntonyAuction', function () {
+	const ONE_WEEK_IN_SECS = 7 * 24 * 60 * 60;
+	const tokenId = 1;
+
 	it('Test the admin is owner', async function () {
 		const { signer, antonyAuction } = await loadFixture(deployAntonyAutionFixture);
 		expect(signer.address).to.equal(await antonyAuction.admin());
@@ -22,9 +25,6 @@ describe('AntonyAuction', function () {
 	});
 
 	it('Test auction flow', async function () {
-		const ONE_WEEK_IN_SECS = 7 * 24 * 60 * 60;
-		const tokenId = 1;
-
 		const { antonyAuction, testERC20, testERC721, signer, buyer1, buyer2, auctionProxy } =
 			await loadFixture(deployAntonyAutionFixture);
 
@@ -37,7 +37,6 @@ describe('AntonyAuction', function () {
 			tokenId
 		);
 		expect(ethers.parseEther('0.01')).to.equal((await antonyAuction.auctions(0)).startPrice);
-		console.log('--Auction created successfully');
 
 		// 2. Place bid by ETH
 		let tx = await antonyAuction
@@ -46,7 +45,6 @@ describe('AntonyAuction', function () {
 		await tx.wait();
 		expect(ethers.parseEther('0.01')).to.equal((await antonyAuction.auctions(0)).highestBid);
 		expect(buyer1.address).to.equal((await antonyAuction.auctions(0)).highestBidder);
-		console.log('--place ETH Bid successfully');
 
 		// 3. Place bid by USDC
 		tx = await testERC20.connect(signer).transfer(buyer2, ethers.parseEther('1000'));
@@ -57,9 +55,7 @@ describe('AntonyAuction', function () {
 			.connect(buyer2)
 			.placeBid(0, ethers.parseEther('101'), await testERC20.getAddress());
 		await tx.wait();
-		// expect(ethers.parseEther('101')).to.equal((await antonyAuction.auctions(0)).highestBid);
 		expect(buyer2.address).to.equal((await antonyAuction.auctions(0)).highestBidder);
-		console.log('--place USDC Bid successfully');
 
 		// 4. End auction
 		await time.increaseTo((await antonyAuction.auctions(0)).startTime + BigInt(ONE_WEEK_IN_SECS));
@@ -70,6 +66,34 @@ describe('AntonyAuction', function () {
 		expect(auctionResult.highestBidder).to.equal(buyer2.address);
 		expect(auctionResult.highestBid).to.equal(ethers.parseEther('101'));
 		expect(buyer2.address).to.equal(await testERC721.ownerOf(tokenId));
+	});
+
+	it('Test upgrade to V2', async function () {
+		const { signer, antonyAuction, testERC721, auctionProxy } =
+			await loadFixture(deployAntonyAutionFixture);
+
+		// 1. Create auction
+		await testERC721.connect(signer).setApprovalForAll(auctionProxy.address, true);
+		await antonyAuction.createAuction(
+			ONE_WEEK_IN_SECS,
+			ethers.parseEther('0.01'),
+			await testERC721.getAddress(),
+			tokenId
+		);
+		expect(ethers.parseEther('0.01')).to.equal((await antonyAuction.auctions(0)).startPrice);
+
+		// 2. Upgrade auction
+		const implAddress1 = await upgrades.erc1967.getImplementationAddress(auctionProxy.address);
+		await deployments.fixture(['UpgradeAntonyAuction']);
+		const implAddress2 = await upgrades.erc1967.getImplementationAddress(auctionProxy.address);
+		console.log('--implAddress1 and implAddress2: ', implAddress1, implAddress2);
+		expect(implAddress1).to.not.equal(implAddress2);
+
+		// 3. Test result
+		const antonyAuctionV2 = await ethers.getContractAt('AntonyAuctionV2', auctionProxy.address);
+		expect(await antonyAuctionV2.testHello()).to.equal('Hello World, I am version 2!');
+		expect((await antonyAuctionV2.auctions(0)).startPrice).to.equal(ethers.parseEther('0.01'));
+		expect(await antonyAuctionV2.admin()).to.equal(signer.address);
 	});
 
 	async function deployAntonyAutionFixture() {
@@ -109,7 +133,6 @@ async function setPriceToOracle(aggregatorV3: any, price: bigint) {
 	const priceFeedDeploy = await aggregatorV3.deploy(price);
 	const priceFeed = await priceFeedDeploy.waitForDeployment();
 	const priceFeedAddress = await priceFeed.getAddress();
-	console.log('--priceFeedAddress: ', priceFeedAddress, price);
 	return priceFeedAddress;
 }
 
