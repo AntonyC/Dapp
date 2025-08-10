@@ -65,13 +65,13 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 	) public {
 		require(msg.sender == admin, 'Only admin can create auctions');
 
-		require(_duration >= 10, 'Duration must be greater than 10s');
+		require(_duration >= 60 * 60 * 24, 'Duration must be greater than 1 day');
 		require(_startPrice > 0, 'Start price must be greater than 0');
 
 		// Transfer NFT
 		// IERC721(_nftAddress).approve(address(this), _tokenId);
 		IERC721(_nftAddress).safeTransferFrom(msg.sender, address(this), _tokenId);
-
+		console.log('--IERC721(_nftAddress).safeTransferFrom: ', msg.sender, address(this), _tokenId);
 		auctions[nextAuctionId] = Auction({
 			seller: msg.sender,
 			duration: _duration,
@@ -118,7 +118,7 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 			'Bid must be higher than the current highest bid'
 		);
 
-		// Transfer to ERC20
+		// Transfer ERC20 to auction contract
 		if (_tokenAddress != address(0)) {
 			IERC20(_tokenAddress).transferFrom(msg.sender, address(this), amount);
 		}
@@ -158,6 +158,7 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 	}
 
 	function _authorizeUpgrade(address) internal view override {
+		console.log('-- _authorizeUpgrade called');
 		require(msg.sender == admin, 'Only admin can upgrade');
 	}
 
@@ -167,6 +168,7 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 		uint256 tokenId,
 		bytes calldata data
 	) external pure returns (bytes4) {
+		console.log('--: onERC721Received', operator, from, tokenId);
 		return this.onERC721Received.selector;
 	}
 }
