@@ -150,8 +150,17 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 			auction.highestBidder,
 			auction.tokenId
 		);
-		// Transfer ETH to seller
-		// payable(address(this)).transfer(address(this).balance);
+		// Transfer to seller
+		if (auction.tokenAddress != address(0)) {
+			// Transfer ERC20 to seller
+			console.log('--Transfer ERC20 to seller: ', auction.seller, auction.highestBid);
+			IERC20(auction.tokenAddress).transfer(auction.seller, auction.highestBid);
+		} else {
+			// Transfer ETH to seller
+			console.log('--Transfer ETH to seller: ', auction.seller, address(this).balance);
+			payable(auction.seller).transfer(address(this).balance);
+		}
+
 		auction.ended = true;
 	}
 

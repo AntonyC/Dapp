@@ -59,13 +59,20 @@ describe('AntonyAuction', function () {
 
 		// 4. End auction
 		await time.increaseTo((await antonyAuction.auctions(0)).startTime + BigInt(ONE_WEEK_IN_SECS));
+		const buyerBalanceBefore = await testERC20.balanceOf(signer.address);
 		await antonyAuction.connect(signer).endAuction(0);
+		const buyerBalanceAfter = await testERC20.balanceOf(signer.address);
 
 		// 5. Test results
 		const auctionResult = await antonyAuction.auctions(0);
 		expect(auctionResult.highestBidder).to.equal(buyer2.address);
 		expect(auctionResult.highestBid).to.equal(ethers.parseEther('101'));
-		expect(buyer2.address).to.equal(await testERC721.ownerOf(tokenId));
+		// NFC transfered to buyer2
+		expect(await testERC721.ownerOf(tokenId)).to.equal(buyer2.address);
+		// Seller balance increased
+		expect(buyerBalanceAfter - buyerBalanceBefore).to.equal(ethers.parseEther('101'));
+		// Auction ended
+		expect(auctionResult.ended).to.be.true;
 	});
 
 	it('Test upgrade to V2', async function () {
