@@ -11,6 +11,9 @@ importers:
       '@chainlink/contracts':
         specifier: ^1.4.0
         version: 1.4.0(ethers@6.15.0)
+      '@nomicfoundation/hardhat-ethers':
+        specifier: ^3.1.0
+        version: 3.1.0(ethers@6.15.0)(hardhat@2.26.2(ts-node@10.9.2(@types/node@24.2.0)(typescript@5.0.4))(typescript@5.0.4))
       '@openzeppelin/contracts':
         specifier: ^5.4.0
         version: 5.4.0
@@ -26,9 +29,6 @@ importers:
       ethers:
         specifier: ^6.15.0
         version: 6.15.0
-      hardhat-ethers:
-        specifier: ^1.0.1
-        version: 1.0.1
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -2100,9 +2100,6 @@ packages:
 
   hardhat-deploy@1.0.4:
     resolution: {integrity: sha512-vl6vYQHDtZmILerAIRERI2AjghLH5gJIcQjNrSldn2SjQdY5Y47umXVll4/ywPzBRlsqdpJfL92PhnQ+1xB+Sg==}
-
-  hardhat-ethers@1.0.1:
-    resolution: {integrity: sha512-zS7VPEwlYwIbMZG/PTDM9pF1cagmxNGxA6hLCOFQt/wYPDWgw5eUQNchi9fRbd+k6ZIgm3UypsjK60Qqlx7Ogw==}
 
   hardhat-gas-reporter@2.3.0:
     resolution: {integrity: sha512-ySdA+044xMQv1BlJu5CYXToHzMexKFfIWxlQTBNNoerx1x96+d15IMdN01iQZ/TJ7NH2V5sU73bz77LoS/PEVw==}
@@ -6848,8 +6845,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-
-  hardhat-ethers@1.0.1: {}
 
   hardhat-gas-reporter@2.3.0(hardhat@2.26.2(ts-node@10.9.2(@types/node@24.2.0)(typescript@5.0.4))(typescript@5.0.4))(typescript@5.0.4)(zod@3.25.76):
     dependencies:
