@@ -103,6 +103,11 @@ describe('AntonyAuction', function () {
 		expect(await antonyAuctionV2.admin()).to.equal(signer.address);
 	});
 
+	it('Test creating auction by factory', async function () {
+		const { signer, antonyAuction } = await loadFixture(deployAntonyAutionFixture);
+		expect(signer.address).to.equal(await antonyAuction.admin());
+	});
+
 	async function deployAntonyAutionFixture() {
 		const [signer, buyer1, buyer2] = await ethers.getSigners();
 
