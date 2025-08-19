@@ -113,13 +113,19 @@ describe('AntonyAuction', function () {
 		const auctionFactory = (await auctionFactoryFactory.deploy(antonyAuction.getAddress())) as any;
 		await auctionFactory.waitForDeployment();
 
-		await testERC721.connect(signer).setApprovalForAll(antonyAuction.getAddress(), true);
-		await auctionFactory.createAuction(
+		// await testERC721.connect(signer).setApprovalForAll(antonyAuction.getAddress(), true);
+		const tx = await auctionFactory.createAuction(
 			ONE_WEEK_IN_SECS,
 			ethers.parseEther('0.01'),
 			await testERC721.getAddress(),
 			tokenId
 		);
+
+		const receipt = await tx.wait(); // 等交易确认
+		// console.log('--receipt: ', receipt.logs);
+		const event = receipt.logs.find(log => log.fragment?.name === 'AuctionCreated');
+		const auctionAddress = event.args[0]; // 就是返回的 proxy 地址
+		expect(await auctionFactory.auctionMap(tokenId)).to.equal(auctionAddress);
 	});
 
 	async function deployAntonyAutionFixture() {
