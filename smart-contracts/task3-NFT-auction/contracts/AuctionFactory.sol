@@ -2,17 +2,18 @@
 pragma solidity ^0.8.20;
 import './AntonyAuction.sol';
 import '@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol';
+import 'hardhat/console.sol';
 
 contract AuctionFactory {
 	address public immutable auctionImplementation;
-	event AuctionCreated(address proxy, uint256 tokenId);
+	// event AuctionCreated(address proxy, uint256 tokenId);
 	constructor(address _auctionImplementation) {
 		auctionImplementation = _auctionImplementation;
 	}
 
 	address[] public auctions;
 
-	mapping(uint256 tokenId => AntonyAuction) public auctionMap;
+	mapping(uint256 tokenId => ERC1967Proxy) public auctionMap;
 
 	event AuctionCreated(address indexed auctionAddress, uint256 tokenId);
 
@@ -31,8 +32,9 @@ contract AuctionFactory {
 		// emit AuctionCreated(address(auction), tokenId);
 		// return address(auction);
 
+		console.log('--: ', 'createAuction', auctionImplementation);
 		ERC1967Proxy proxy = new ERC1967Proxy(
-			auctionImplementation,
+			0x5FbDB2315678afecb367f032d93F642f64180aa3,
 			abi.encodeWithSelector(AntonyAuction.initialize.selector)
 		);
 

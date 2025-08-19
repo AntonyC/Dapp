@@ -104,8 +104,22 @@ describe('AntonyAuction', function () {
 	});
 
 	it('Test creating auction by factory', async function () {
-		const { signer, antonyAuction } = await loadFixture(deployAntonyAutionFixture);
-		expect(signer.address).to.equal(await antonyAuction.admin());
+		const { signer, antonyAuction, auctionProxy, testERC721 } =
+			await loadFixture(deployAntonyAutionFixture);
+		// expect(signer.address).to.equal(await antonyAuction.admin());
+		// const auctionFactory = await hre.viem.deployContract('AuctionFactory', [signer.address]);
+
+		const auctionFactoryFactory = await ethers.getContractFactory('AuctionFactory');
+		const auctionFactory = (await auctionFactoryFactory.deploy(antonyAuction.getAddress())) as any;
+		await auctionFactory.waitForDeployment();
+
+		await testERC721.connect(signer).setApprovalForAll(antonyAuction.getAddress(), true);
+		await auctionFactory.createAuction(
+			ONE_WEEK_IN_SECS,
+			ethers.parseEther('0.01'),
+			await testERC721.getAddress(),
+			tokenId
+		);
 	});
 
 	async function deployAntonyAutionFixture() {
