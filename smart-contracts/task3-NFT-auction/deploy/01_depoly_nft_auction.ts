@@ -30,8 +30,9 @@ function saveToLocalCache(deployData: DeployData, fileName: string) {
 }
 
 async function deployByUUPSUpgradeable(hre: HardhatRuntimeEnvironment): Promise<DeployData> {
+	const { deployer } = await hre.getNamedAccounts();
 	const antonyAuctionFactory = await hre.ethers.getContractFactory('AntonyAuction');
-	const auctionProxy = await hre.upgrades.deployProxy(antonyAuctionFactory, [], {
+	const auctionProxy = await hre.upgrades.deployProxy(antonyAuctionFactory, [deployer], {
 		initializer: 'initialize',
 	});
 	await auctionProxy.waitForDeployment();

@@ -5,7 +5,7 @@ import '@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol';
 import 'hardhat/console.sol';
 
 contract AuctionFactory {
-	address public immutable auctionImplementation;
+	address public auctionImplementation;
 	// event AuctionCreated(address proxy, uint256 tokenId);
 	constructor(address _auctionImplementation) {
 		auctionImplementation = _auctionImplementation;
@@ -24,17 +24,9 @@ contract AuctionFactory {
 		address nftContractAddress,
 		uint256 tokenId
 	) external returns (address) {
-		// AntonyAuction auction = new AntonyAuction();
-		// auction.initialize();
-		// auctions.push(address(auction));
-		// auctionMap[tokenId] = auction;
-
-		// emit AuctionCreated(address(auction), tokenId);
-		// return address(auction);
-
 		ERC1967Proxy proxy = new ERC1967Proxy(
-			0x5FbDB2315678afecb367f032d93F642f64180aa3,
-			abi.encodeWithSelector(AntonyAuction.initialize.selector)
+			auctionImplementation,
+			abi.encodeWithSelector(AntonyAuction.initialize.selector, msg.sender)
 		);
 
 		emit AuctionCreated(address(proxy), tokenId);
@@ -48,8 +40,12 @@ contract AuctionFactory {
 		return auctions;
 	}
 
-	function getAuction(uint256 tokenId) external view returns (address) {
-		require(tokenId < auctions.length, 'tokenId out of bounds');
-		return auctions[tokenId];
+	// function getAuction(uint256 tokenId) external view returns (ERC1967Proxy memory) {
+	// 	return auctionMap[tokenId];
+	// }
+
+	function getAuction(uint256 index) external view returns (address) {
+		require(index < auctions.length, 'tokenId out of bounds');
+		return auctions[index];
 	}
 }

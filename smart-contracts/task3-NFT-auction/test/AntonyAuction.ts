@@ -98,34 +98,39 @@ describe('AntonyAuction', function () {
 
 		// 3. Test result
 		const antonyAuctionV2 = await ethers.getContractAt('AntonyAuctionV2', auctionProxy.address);
-		expect(await antonyAuctionV2.testHello()).to.equal('Hello World, I am version 2!');
+		expect(await antonyAuctionV2.testHello2()).to.equal('Hello World, I am version 2!');
 		expect((await antonyAuctionV2.auctions(0)).startPrice).to.equal(ethers.parseEther('0.01'));
 		expect(await antonyAuctionV2.admin()).to.equal(signer.address);
 	});
 
 	it('Test creating auction by factory', async function () {
-		const { signer, antonyAuction, auctionProxy, testERC721 } =
-			await loadFixture(deployAntonyAutionFixture);
-		// expect(signer.address).to.equal(await antonyAuction.admin());
+		const { auctionProxy, testERC721 } = await loadFixture(deployAntonyAutionFixture);
 		// const auctionFactory = await hre.viem.deployContract('AuctionFactory', [signer.address]);
 
+		// 1. Deploy factory
+		const implAddress = await hre.upgrades.erc1967.getImplementationAddress(auctionProxy.address);
 		const auctionFactoryFactory = await ethers.getContractFactory('AuctionFactory');
-		const auctionFactory = (await auctionFactoryFactory.deploy(antonyAuction.getAddress())) as any;
+		const auctionFactory = (await auctionFactoryFactory.deploy(implAddress)) as any;
 		await auctionFactory.waitForDeployment();
-
-		// await testERC721.connect(signer).setApprovalForAll(antonyAuction.getAddress(), true);
 		const tx = await auctionFactory.createAuction(
 			ONE_WEEK_IN_SECS,
 			ethers.parseEther('0.01'),
 			await testERC721.getAddress(),
 			tokenId
 		);
-
-		const receipt = await tx.wait(); // 等交易确认
-		// console.log('--receipt: ', receipt.logs);
+		const receipt = await tx.wait();
 		const event = receipt.logs.find(log => log.fragment?.name === 'AuctionCreated');
-		const auctionAddress = event.args[0]; // 就是返回的 proxy 地址
-		expect(await auctionFactory.auctionMap(tokenId)).to.equal(auctionAddress);
+		expect(await auctionFactory.auctionMap(tokenId)).to.equal(event.args[0]);
+		// 2. Test created auction
+		const proxyAddress = await auctionFactory.getAuction(0);
+		const auction1 = await ethers.getContractAt('AntonyAuction', proxyAddress);
+		expect(await auction1.testHello1()).to.equal('Hello World, I am version 1!');
+		expect(() => (auction1 as any).testHello2()).to.throw('auction1.testHello2 is not a function');
+		// 3. Test upgraded auction
+		const auction2Factory = await hre.ethers.getContractFactory('AntonyAuctionV2');
+		const auction2 = await hre.upgrades.upgradeProxy(proxyAddress, auction2Factory);
+		await auction2.waitForDeployment();
+		expect(await auction2.testHello2()).to.equal('Hello World, I am version 2!');
 	});
 
 	async function deployAntonyAutionFixture() {

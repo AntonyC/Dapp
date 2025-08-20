@@ -34,8 +34,8 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 
 	mapping(address => AggregatorV3Interface) public priceFeeds;
 
-	function initialize() public initializer {
-		admin = msg.sender;
+	function initialize(address _admin) public initializer {
+		admin = _admin;
 	}
 
 	function setPriceFeed(address tokenAddress, address _priceFeed) public {
@@ -64,10 +64,8 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 		uint256 _tokenId
 	) public {
 		require(msg.sender == admin, 'Only admin can create auctions');
-
 		require(_duration >= 60 * 60 * 24, 'Duration must be greater than 1 day');
 		require(_startPrice > 0, 'Start price must be greater than 0');
-
 		// Transfer NFT
 		// IERC721(_nftAddress).approve(address(this), _tokenId);
 		IERC721(_nftAddress).safeTransferFrom(msg.sender, address(this), _tokenId);
@@ -177,5 +175,9 @@ contract AntonyAuction is Initializable, UUPSUpgradeable {
 	) external pure returns (bytes4) {
 		console.log('--onERC721Received: ', operator, from, tokenId);
 		return this.onERC721Received.selector;
+	}
+
+	function testHello1() public pure returns (string memory) {
+		return 'Hello World, I am version 1!';
 	}
 }
