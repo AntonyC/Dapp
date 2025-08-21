@@ -108,10 +108,18 @@ describe('AntonyAuction', function () {
 		// const auctionFactory = await hre.viem.deployContract('AuctionFactory', [signer.address]);
 
 		// 1. Deploy factory
-		const implAddress = await hre.upgrades.erc1967.getImplementationAddress(auctionProxy.address);
-		const auctionFactoryFactory = await ethers.getContractFactory('AuctionFactory');
-		const auctionFactory = (await auctionFactoryFactory.deploy(implAddress)) as any;
-		await auctionFactory.waitForDeployment();
+		// console.log('--: ', auctionProxy.address);
+		// const implAddress = await hre.upgrades.erc1967.getImplementationAddress(auctionProxy.address);
+		// const auctionFactoryFactory = await ethers.getContractFactory('AuctionFactory');
+		// const auctionFactory = (await auctionFactoryFactory.deploy(implAddress)) as any;
+		// await auctionFactory.waitForDeployment();
+
+		await deployments.fixture(['DeployAuctionFactory']);
+		const deployment = await deployments.get('auctionFactory');
+		console.log('--: deployment.abi', deployment.abi);
+		const auctionFactory = (await ethers.getContractAt(deployment.abi, deployment.address)) as any;
+
+		// const auctionFactory = await deployments.get('auctionFactory');
 		const tx = await auctionFactory.createAuction(
 			ONE_WEEK_IN_SECS,
 			ethers.parseEther('0.01'),

@@ -24,6 +24,7 @@ contract AuctionFactory {
 		address nftContractAddress,
 		uint256 tokenId
 	) external returns (address) {
+		console.log('--: ', 'createAuction');
 		ERC1967Proxy proxy = new ERC1967Proxy(
 			auctionImplementation,
 			abi.encodeWithSelector(AntonyAuction.initialize.selector, msg.sender)
