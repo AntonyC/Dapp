@@ -11,9 +11,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const auctionFactory = (await auctionFactoryFactory.deploy(deployData.implAddress)) as any;
 	await auctionFactory.waitForDeployment();
 
+	const auctionFactoryAddress = await auctionFactory.getAddress();
+	console.log('--auctionFactoryAddress: ', auctionFactoryAddress);
+
 	await hre.deployments.save('auctionFactory', {
 		abi: auctionFactoryFactory.interface.format(false),
-		address: await auctionFactory.getAddress(),
+		address: auctionFactoryAddress,
 		userdoc: 'Antony03',
 	});
 };

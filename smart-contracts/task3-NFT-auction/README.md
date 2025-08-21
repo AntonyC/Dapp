@@ -16,6 +16,7 @@ npx hardhat ignition deploy ./ignition/modules/Lock.ts
 2. npx hardhat node
 3. npx hardhat deploy --tags DeployAntonyAuction --network localhost
 4. npx hardhat deploy --tags UpgradeAntonyAuction --network localhost
+5. npx hardhat deploy --tags DeployAuctionFactory --network localhost
 ```
 
 
