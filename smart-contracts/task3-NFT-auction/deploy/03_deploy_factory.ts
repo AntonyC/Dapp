@@ -13,7 +13,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 	await hre.deployments.save('auctionFactory', {
 		abi: auctionFactoryFactory.interface.format(false),
-		address: auctionFactory.getAddress(),
+		address: await auctionFactory.getAddress(),
 		userdoc: 'Antony03',
 	});
 };
