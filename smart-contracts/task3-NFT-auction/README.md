@@ -1,24 +1,25 @@
-# Sample Hardhat Project
+# Address on Sepolia:
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
+- Antony auction proxyAddress:  0x0369DF4492f431B7B9e835075f9b53022C477e2A
+- Auction factory address:      0x35Bfb8C319c968d8De76B989a17b70a994e1164d
+- auctionImplementation in factory:  0xD9Ac4219AF3bBD6d684B1dd903F5c61815f7F4F3
+# Init project:
+```
+1. git clone git@github.com:AntonyC/Dapp.git
+2. cd ~/Dapp/smart-contracts/task3-NFT-auction
+3. pnpm install
+```
+# Deploy steps to Sepolia:
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
+1. npx hardhat node
+2. npx hardhat deploy --tags DeployAntonyAuction --network sepolia
+3. npx hardhat deploy --tags UpgradeAntonyAuction --network sepolia
+4. npx hardhat deploy --tags DeployAuctionFactory --network sepolia
 ```
-```shell
-1. pnpm i
-2. npx hardhat node
-3. npx hardhat deploy --tags DeployAntonyAuction --network localhost
-4. npx hardhat deploy --tags UpgradeAntonyAuction --network localhost
-5. npx hardhat deploy --tags DeployAuctionFactory --network localhost
-```
+# Test steps on local:
 
+# Reference websites
 
 [buy usdc](https://app.uniswap.org/)
 
