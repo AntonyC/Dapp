@@ -8,6 +8,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	console.log('--Start UpgradeAntonyAuction');
 	const deployData = await getDeployData('proxyAuction.json');
 	const proxyAddressV2 = await upgradeContract(hre, deployData);
+	console.log('--upgraded address: ', proxyAddressV2);
 	await hre.deployments.save('auctionProxyV2', {
 		abi: deployData.abi,
 		address: proxyAddressV2,

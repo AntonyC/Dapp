@@ -11,9 +11,6 @@ const config: HardhatUserConfig = {
 			url: `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
 			accounts: [`${process.env.PK}`],
 		},
-		// localhost: {
-		// 	url: 'http://localhost:8545',
-		// },
 	},
 	namedAccounts: {
 		deployer: 0,
