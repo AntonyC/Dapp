@@ -8,6 +8,8 @@
 1. git clone git@github.com:AntonyC/Dapp.git
 2. cd ~/Dapp/smart-contracts/task3-NFT-auction
 3. pnpm install
+4. Creact file .env under path ~/Dapp/smart-contracts/task3-NFT-auction
+5. Add properties of INFURA_API_KEY and PK(private key)
 ```
 # Deploy steps to Sepolia:
 
