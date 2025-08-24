@@ -21,6 +21,11 @@
 ```
 # Test steps on local:
 
+```
+1. cd ~/Dapp/smart-contracts/task3-NFT-auction
+2. npx hardhat test
+```
+
 # Reference websites
 
 [buy usdc](https://app.uniswap.org/)
