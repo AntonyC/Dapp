@@ -1,12 +1,14 @@
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { config } from "./config";
+import { WagmiProvider } from "wagmi";
 
 function App() {
-  const account = useAccount()
-  const { connectors, connect, status, error } = useConnect()
-  const { disconnect } = useDisconnect()
+  const account = useAccount();
+  const { connectors, connect, status, error } = useConnect();
+  const { disconnect } = useDisconnect();
 
   return (
-    <>
+    <WagmiProvider config={config}>
       <div>
         <h2>Account</h2>
 
@@ -18,7 +20,7 @@ function App() {
           chainId: {account.chainId}
         </div>
 
-        {account.status === 'connected' && (
+        {account.status === "connected" && (
           <button type="button" onClick={() => disconnect()}>
             Disconnect
           </button>
@@ -39,8 +41,8 @@ function App() {
         <div>{status}</div>
         <div>{error?.message}</div>
       </div>
-    </>
-  )
+    </WagmiProvider>
+  );
 }
 
-export default App
+export default App;
