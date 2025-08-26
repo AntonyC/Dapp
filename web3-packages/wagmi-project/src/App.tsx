@@ -1,6 +1,4 @@
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { config } from "./config";
-import { WagmiProvider } from "wagmi";
 
 function App() {
   const account = useAccount();
@@ -8,7 +6,7 @@ function App() {
   const { disconnect } = useDisconnect();
 
   return (
-    <WagmiProvider config={config}>
+    <>
       <div>
         <h2>Account</h2>
 
@@ -41,7 +39,7 @@ function App() {
         <div>{status}</div>
         <div>{error?.message}</div>
       </div>
-    </WagmiProvider>
+    </>
   );
 }
 
