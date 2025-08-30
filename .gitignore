@@ -1,4 +1,5 @@
 smart-contracts/*/deployments/
 **/.cache/
 .DS_Store
+.env
 node_modules/

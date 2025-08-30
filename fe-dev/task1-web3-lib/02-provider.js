@@ -1,24 +1,65 @@
-// 不接触用户私钥，只能读取链上信息，不能写入，这一点比 web3.js 要安全
-
-// 以在 Chainlist 网站找到各个链的公开节点 https://chainlist.org
+// Without accessing users’ private keys, it can only read on-chain data but not write, which makes it safer than web3.js.
 
 import { ethers } from "ethers";
+import dotenv from "dotenv";
 
-const provider = ethers.getDefaultProvider();
-const provider1 = new ethers.JsonRpcProvider("https://eth.drpc.org");
-// 利用公共rpc节点连接以太坊网络
-// 可以在 https://chainlist.org 上找到
-const ALCHEMY_MAINNET_URL = "https://rpc.ankr.com/eth";
-const ALCHEMY_SEPOLIA_URL = "https://rpc.sepolia.org";
-// 连接以太坊主网
-const providerETH = new ethers.JsonRpcProvider(ALCHEMY_MAINNET_URL);
-// 连接Sepolia测试网
-const providerSepolia = new ethers.JsonRpcProvider(ALCHEMY_SEPOLIA_URL);
+dotenv.config();
+
+// const provider = ethers.getDefaultProvider();
+// We can get this URL from https://chainlist.org
+const PUBLIC_MAINNET_URL = "https://eth.drpc.org";
+const PUBLIC_EPOLIA_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
+
+const providerMain = new ethers.JsonRpcProvider(PUBLIC_MAINNET_URL);
+const providerSepolia = new ethers.JsonRpcProvider(PUBLIC_EPOLIA_URL);
+const accountSepoliaAddr = "0xf1C88C36Fb612Cf5D9c3f84F651bFE9049b1B927";
+const contractERC20Addr = "0x975c45dd4355ba9379F4144619ecfC026e7cAa28";
 
 const main = async () => {
-  const balance = await provider1.getBalance("vitalik.eth");
-  console.log(`ETH balance of Vitalk: ${balance} wei`);
-  console.log(`ETH balance of Vitalk: ${ethers.formatEther(balance)} ETH`);
+  // ENS domains are not supported on the testnet yet
+  const balance = await providerMain.getBalance("vitalik.eth");
+  const balanceSepolia = await providerSepolia.getBalance(accountSepoliaAddr);
+
+  console.log(
+    `1. Balance: ${ethers.formatEther(balance)} ETH, ${ethers.formatEther(
+      balanceSepolia
+    )} ETH `
+  );
+
+  console.log(
+    "2. Network: ",
+    (await providerMain.getNetwork()).toJSON(),
+    (await providerSepolia.getNetwork()).toJSON()
+  );
+
+  console.log(
+    "3. Block number: ",
+    await providerMain.getBlockNumber(),
+    await providerSepolia.getBlockNumber()
+  );
+
+  console.log(
+    "4. Transaction Count: ",
+    await providerMain.getTransactionCount("vitalik.eth"),
+    await providerSepolia.getTransactionCount(accountSepoliaAddr)
+  );
+
+  console.log(
+    "5. Fee Data: ",
+    await providerMain.getFeeData("vitalik.eth"),
+    await providerSepolia.getFeeData(accountSepoliaAddr)
+  );
+
+  console.log(
+    "6. Block info: ",
+    await providerMain.getBlock(0),
+    await providerSepolia.getBlock(0)
+  );
+
+  console.log(
+    "7. Byte code: ",
+    await providerSepolia.getCode(contractERC20Addr)
+  );
 };
 
 main();
