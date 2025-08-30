@@ -13,5 +13,8 @@
   "dependencies": {
     "dotenv": "^17.2.1",
     "ethers": "^6.15.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.5"
   }
 }

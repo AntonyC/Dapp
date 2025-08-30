@@ -1,5 +1,6 @@
-// 1. Run "pnpm install ethers --save"
+// 1. Run "pnpm install ethers --save" "pnpm install -D tsx"
 // 2. Install plugin "Code Runner"
+// 3. npx tsx 02-provider.ts
 
 import { ethers } from "ethers";
 

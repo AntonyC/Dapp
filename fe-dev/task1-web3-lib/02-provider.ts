@@ -46,8 +46,8 @@ const main = async () => {
 
   console.log(
     "5. Fee Data: ",
-    await providerMain.getFeeData("vitalik.eth"),
-    await providerSepolia.getFeeData(accountSepoliaAddr)
+    await providerMain.getFeeData(),
+    await providerSepolia.getFeeData()
   );
 
   console.log(
