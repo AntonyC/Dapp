@@ -8,10 +8,10 @@ dotenv.config();
 // const provider = ethers.getDefaultProvider();
 // We can get this URL from https://chainlist.org
 const PUBLIC_MAINNET_URL = "https://eth.drpc.org";
-const PUBLIC_EPOLIA_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
+const MY_SEPOLIA_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
 
 const providerMain = new ethers.JsonRpcProvider(PUBLIC_MAINNET_URL);
-const providerSepolia = new ethers.JsonRpcProvider(PUBLIC_EPOLIA_URL);
+const providerSepolia = new ethers.JsonRpcProvider(MY_SEPOLIA_URL);
 const accountSepoliaAddr = "0xf1C88C36Fb612Cf5D9c3f84F651bFE9049b1B927";
 const contractBeggerAddr = "0x975c45dd4355ba9379F4144619ecfC026e7cAa28";
 

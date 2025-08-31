@@ -2,15 +2,7 @@
 // read-write provider：const contract = new ethers.Contract(`address`, `abi`, `signer`);
 
 import { ethers } from "ethers";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const PUBLIC_EPOLIA_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
-
-const provider = new ethers.JsonRpcProvider(PUBLIC_EPOLIA_URL);
-const addrAccount = "0xf1C88C36Fb612Cf5D9c3f84F651bFE9049b1B927";
-const addrAntonyC = "0x6b7fA1d49C4aA2079c62e1c52cB7BF86aD91959F";
+import { provider, addrAccount, addrAntonyC } from "./utils-sepolia.ts";
 
 // https://sepolia.etherscan.io/address/0x6b7fA1d49C4aA2079c62e1c52cB7BF86aD91959F#code
 const abiAntonyC =
