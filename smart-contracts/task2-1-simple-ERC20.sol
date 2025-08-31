@@ -9,7 +9,9 @@
 // 提示：
 // - 使用 mapping 存储账户余额和授权信息。
 // - 使用 event 定义 Transfer 和 Approval 事件。
-// - 部署到sepolia 测试网，导入到自己的钱包: 0xae2e0E2EF908DaD8a375a1881A4C214B109c7d4B
+// - 部署到sepolia 测试网，导入到自己的钱包:
+//   0x6b7fA1d49C4aA2079c62e1c52cB7BF86aD91959F
+//   认证api的时候，注意evm的版本和编译器的版本一致
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
@@ -18,8 +20,8 @@ pragma solidity ^0.8.20;
 /// @notice 实现了基本的 ERC20 功能，并包含增发功能
 contract SimpleERC20 {
     // 代币基本信息
-    string public name = "SimpleName";
-    string public symbol = "SimpleSymbol";
+    string public name = "Antony's Simple ERC20";
+    string public symbol = "AntonyC";
     uint8 public decimals = 18;
     uint256 public totalSupply;
 
@@ -34,7 +36,11 @@ contract SimpleERC20 {
     // 事件：转账
     event Transfer(address indexed from, address indexed to, uint256 value);
     // 事件：授权
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
 
     constructor(uint256 initialSupply) {
         owner = msg.sender;
@@ -62,14 +68,24 @@ contract SimpleERC20 {
     }
 
     /// @notice 查询授权额度
-    function allowance(address _owner, address spender) public view returns (uint256) {
+    function allowance(
+        address _owner,
+        address spender
+    ) public view returns (uint256) {
         return _allowances[_owner][spender];
     }
 
     /// @notice 代扣转账
-    function transferFrom(address from, address to, uint256 amount) public returns (bool) {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) public returns (bool) {
         uint256 currentAllowance = _allowances[from][msg.sender];
-        require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
+        require(
+            currentAllowance >= amount,
+            "ERC20: transfer amount exceeds allowance"
+        );
 
         _allowances[from][msg.sender] = currentAllowance - amount;
         _transfer(from, to, amount);
@@ -88,7 +104,10 @@ contract SimpleERC20 {
 
     function _transfer(address from, address to, uint256 amount) internal {
         require(to != address(0), "ERC20: transfer to zero address");
-        require(_balances[from] >= amount, "ERC20: transfer amount exceeds balance");
+        require(
+            _balances[from] >= amount,
+            "ERC20: transfer amount exceeds balance"
+        );
 
         _balances[from] -= amount;
         _balances[to] += amount;

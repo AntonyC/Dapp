@@ -13,7 +13,7 @@ const PUBLIC_EPOLIA_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API
 const providerMain = new ethers.JsonRpcProvider(PUBLIC_MAINNET_URL);
 const providerSepolia = new ethers.JsonRpcProvider(PUBLIC_EPOLIA_URL);
 const accountSepoliaAddr = "0xf1C88C36Fb612Cf5D9c3f84F651bFE9049b1B927";
-const contractERC20Addr = "0x975c45dd4355ba9379F4144619ecfC026e7cAa28";
+const contractBeggerAddr = "0x975c45dd4355ba9379F4144619ecfC026e7cAa28";
 
 const main = async () => {
   // ENS domains are not supported on the testnet yet
@@ -58,7 +58,7 @@ const main = async () => {
 
   console.log(
     "7. Byte code: ",
-    await providerSepolia.getCode(contractERC20Addr)
+    await providerSepolia.getCode(contractBeggerAddr)
   );
 };
 
