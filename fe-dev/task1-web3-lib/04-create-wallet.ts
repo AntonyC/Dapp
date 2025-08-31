@@ -29,23 +29,21 @@ async function main() {
   console.log(`wallet2 tx count: ${txCount2}`);
 
   // 1. Before sending
-  console.log(`\Before sending, check balance`);
-  console.log(
-    `wallet1: ${ethers.formatEther(await provider.getBalance(wallet1))} ETH`
-  );
-  console.log(
-    `wallet2: ${ethers.formatEther(await provider.getBalance(wallet2))} ETH`
-  );
+  console.log(`\nBefore sending, check balance`);
+  const balance1 = await provider.getBalance(wallet1);
+  const balance2 = await provider.getBalance(wallet2);
+  console.log(`balance1: ${ethers.formatEther(balance1)} ETH`);
+  console.log(`balance2: ${ethers.formatEther(balance2)} ETH`);
   // 2. Create transaction
   const tx = {
     to: await wallet1.getAddress(),
     value: ethers.parseEther("0.001"),
   };
   // 3. Send transaction
-  console.log("Sending transaction...");
+  console.log("\n Sending transaction...");
   const receipt = await wallet2.sendTransaction(tx);
   await receipt.wait();
-  console.log(receipt); // 打印交易详情
+  console.log(receipt);
   // 4. After sending, check balance
   console.log(`\nAfter sending, check balance`);
   console.log(
