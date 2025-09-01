@@ -11,25 +11,21 @@ const conAntonyC = new ethers.Contract(addrAntonyC, abiAntonyC, provider);
 
 async function main() {
   const transferEvents = await conAntonyC.queryFilter("Transfer");
-  console.log("--: ", transferEvents.length);
 
-  //   // 获取过去10个区块内的Transfer事件
-  //   console.log("\n1. 获取过去10个区块内的Transfer事件，并打印出1个");
-  //   // 得到当前block
-  //   const block = await provider.getBlockNumber();
-  //   console.log(`当前区块高度: ${block}`);
-  //   console.log(`打印事件详情:`);
-  //   const transferEvents = await conAntonyC.queryFilter(
-  //     "Transfer",
-  //     block - 10,
-  //     block
-  //   );
-  //   // 打印第1个Transfer事件
-  //   console.log(transferEvents[0]);
-  //   console.log("--: ", transferEvents.length);
+  const amount = ethers.formatUnits(
+    ethers.getBigInt(transferEvents[1].data),
+    "ether"
+  );
+  console.log("--amount: ", amount);
+  console.log("--from  : ", transferEvents[1].topics[1]);
+  console.log("--to    : ", transferEvents[1].topics[2]);
 }
 
 main();
+
+// --amount:  1.0
+// --from  :  0x000000000000000000000000f1c88c36fb612cf5d9c3f84f651bfe9049b1b927
+// --to    :  0x0000000000000000000000001329f875b2af89dc6e1438bb8d232188f9474ba1
 
 // [
 //   EventLog {
