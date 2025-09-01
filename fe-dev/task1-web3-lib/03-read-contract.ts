@@ -14,22 +14,7 @@ const abiReadable = [
   "function totalSupply() view returns (uint256)",
   "function balanceOf(address) view returns (uint256)",
 ];
-// readable abi:  [
-//   'constructor(uint256 initialSupply)',
-//   'event Approval(address indexed owner, address indexed spender, uint256 value)',
-//   'event Transfer(address indexed from, address indexed to, uint256 value)',
-//   'function allowance(address _owner, address spender) view returns (uint256)',
-//   'function approve(address spender, uint256 amount) returns (bool)',
-//   'function balanceOf(address account) view returns (uint256)',
-//   'function decimals() view returns (uint8)',
-//   'function mint(address to, uint256 amount)',
-//   'function name() view returns (string)',
-//   'function owner() view returns (address)',
-//   'function symbol() view returns (string)',
-//   'function totalSupply() view returns (uint256)',
-//   'function transfer(address to, uint256 amount) returns (bool)',
-//   'function transferFrom(address from, address to, uint256 amount) returns (bool)'
-// ]
+
 const conAntonyC = new ethers.Contract(addrAntonyC, abiAntonyC, provider);
 const conAntonyC1 = new ethers.Contract(addrAntonyC, abiReadable, provider);
 
@@ -49,3 +34,20 @@ const main = async () => {
 };
 
 main();
+
+// readable abi:  [
+//   'constructor(uint256 initialSupply)',
+//   'event Approval(address indexed owner, address indexed spender, uint256 value)',
+//   'event Transfer(address indexed from, address indexed to, uint256 value)',
+//   'function allowance(address _owner, address spender) view returns (uint256)',
+//   'function approve(address spender, uint256 amount) returns (bool)',
+//   'function balanceOf(address account) view returns (uint256)',
+//   'function decimals() view returns (uint8)',
+//   'function mint(address to, uint256 amount)',
+//   'function name() view returns (string)',
+//   'function owner() view returns (address)',
+//   'function symbol() view returns (string)',
+//   'function totalSupply() view returns (uint256)',
+//   'function transfer(address to, uint256 amount) returns (bool)',
+//   'function transferFrom(address from, address to, uint256 amount) returns (bool)'
+// ]
