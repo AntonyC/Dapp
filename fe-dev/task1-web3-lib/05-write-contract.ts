@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 import { provider, addrWETH, addrAccount4 } from "./utils-sepolia.ts";
 
 const privateKey = process.env.PK || "";
-export const wallet = new ethers.Wallet(privateKey, provider);
+const wallet = new ethers.Wallet(privateKey, provider);
 
 const abiWETH = [
   "function balanceOf(address) public view returns(uint)",
