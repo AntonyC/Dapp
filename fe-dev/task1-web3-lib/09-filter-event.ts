@@ -20,7 +20,7 @@ async function main() {
     "--Balance: ",
     ethers.formatUnits(await conAntonyC.balanceOf(addrAccount), "ether")
   );
-
+  // filter by "to address"
   let filterBinanceIn = conAntonyC.filters.Transfer(null, addrAccount);
   console.log("--filterBinanceIn", filterBinanceIn);
 
@@ -37,7 +37,7 @@ async function main() {
       ethers.formatUnits(await conAntonyC.balanceOf(addrAccount), "ether")
     );
   });
-
+  // filter by "from address"
   let filterToBinanceOut = conAntonyC.filters.Transfer(addrAccount);
   console.log("--filterToBinanceOut: ", filterToBinanceOut);
   conAntonyC.once(filterToBinanceOut, async (res) => {
