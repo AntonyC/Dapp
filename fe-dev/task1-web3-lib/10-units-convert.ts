@@ -35,3 +35,13 @@ console.log(ethers.parseUnits("1.0", "gwei").toString()); // { BigNumber: "10000
 console.log(ethers.parseUnits("1.0", 9).toString()); // { BigNumber: "1000000000" }
 console.log(ethers.parseEther("1.0").toString()); // { BigNumber: "1000000000000000000" } same with parseUnits(value, "ether")
 console.groupEnd();
+
+// const names = [
+//     "wei",
+//     "kwei",
+//     "mwei",
+//     "gwei",
+//     "szabo",
+//     "finney",
+//     "ether",
+// ];
