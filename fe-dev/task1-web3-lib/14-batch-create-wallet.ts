@@ -1,4 +1,5 @@
-// Hierarchical Deterministic Wallet
+// HD:  Hierarchical Deterministic Wallet
+// BIP: Bitcoin Improvement Proposal
 
 // BIP32: m/0/0/1. Multiple private keys can be derived from a single random seed.
 // BIP39: Users can keep their private keys in a human-readable mnemonic phrase, instead of a long hexadecimal string.
