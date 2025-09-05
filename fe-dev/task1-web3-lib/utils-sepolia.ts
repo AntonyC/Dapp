@@ -29,3 +29,4 @@ export const abiAntonyC = [
   "function transferFrom(address from, address to, uint256 amount) returns (bool)",
 ];
 export const addrWETH = "0x7b79995e5f793a07bc00c21412e50ecae098e7f9";
+export const addrAirdrop = "0x271cf0ef2d4da48f751912244f794bbcc9878a1b";

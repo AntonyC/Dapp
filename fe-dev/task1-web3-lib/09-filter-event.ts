@@ -11,8 +11,7 @@ import {
   addrAccount,
 } from "./utils-sepolia.ts";
 
-const privateKey = process.env.PK || "";
-const wallet = new ethers.Wallet(privateKey, provider);
+const wallet = new ethers.Wallet(process.env.PK || "", provider);
 const conAntonyC = new ethers.Contract(addrAntonyC, abiAntonyC, wallet);
 
 async function main() {
