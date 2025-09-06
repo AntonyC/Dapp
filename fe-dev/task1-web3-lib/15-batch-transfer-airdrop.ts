@@ -19,57 +19,55 @@ const numWallet = 20;
 // Derive path：m / purpose' / coin_type' / account' / change / address_index
 // Switch the last address_index to derive a new wallet
 let basePath = "44'/60'/0'/0";
-let addresses: string[] = [];
+let wallets: string[] = [];
 for (let i = 0; i < numWallet; i++) {
   let hdNodeNew = hdNode.derivePath(basePath + "/" + i);
   let walletNew = new ethers.Wallet(hdNodeNew.privateKey);
   //Address to transfer
-  addresses.push(walletNew.address);
+  wallets.push(walletNew.address);
 }
-console.log(addresses);
+console.log(wallets);
 // Amounts to transfer
 const amounts = Array(20).fill(ethers.parseEther("0.0001"));
 console.log("Sent amounts: ", amounts);
 console.groupEnd();
 
-// 3. Declear Airdrop contract
+// 3. Declear contracts
 const abiAirdrop = [
   "function multiTransferToken(address,address[],uint256[]) external",
   "function multiTransferETH(address[],uint256[]) public payable",
 ];
-const conAirdrop = new ethers.Contract(addrAirdrop, abiAirdrop, wallet);
-
-// 4. Declear WETH
 const abiWETH = [
   "function balanceOf(address) public view returns(uint)",
   "function transfer(address, uint) public returns (bool)",
   "function approve(address, uint256) public returns (bool)",
 ];
+const conAirdrop = new ethers.Contract(addrAirdrop, abiAirdrop, wallet);
 const conWETH = new ethers.Contract(addrWETH, abiWETH, wallet);
 
 const main = async () => {
-  // 5. Read balance of ETH and WETH
+  // 4. Read balance of ETH and WETH
   console.group("\n3. Read balance of ETH and WETH from wallet 10");
-  const balanceWETH = await conWETH.balanceOf(addresses[10]);
+  const balanceWETH = await conWETH.balanceOf(wallets[10]);
   console.log(`Balance of WETH before: ${ethers.formatEther(balanceWETH)}`);
-  const balanceETH = await provider.getBalance(addresses[10]);
+  const balanceETH = await provider.getBalance(wallets[10]);
   console.log(`Balance of ETH before: ${ethers.formatEther(balanceETH)}`);
   console.groupEnd();
   printMyBalance();
 
-  // 6. Call multiTransferETH() to send 0.0001 ETH to each wallet
+  // 5. Call multiTransferETH() to send 0.0001 ETH to each wallet
   console.group(
     "\n4. Call multiTransferETH() to send 0.0001 ETH to each wallet"
   );
-  const tx = await conAirdrop.multiTransferETH(addresses, amounts, {
+  const tx = await conAirdrop.multiTransferETH(wallets, amounts, {
     value: ethers.parseEther("0.002"),
   });
   await tx.wait();
 
-  const balanceETH2 = await provider.getBalance(addresses[10]);
+  const balanceETH2 = await provider.getBalance(wallets[10]);
   console.log(`Balance ETH after: ${ethers.formatEther(balanceETH2)}`);
   console.groupEnd();
-  // 7. Call multiTransferToken()to send 0.0001 WETH to each wallet
+  // 6. Call multiTransferToken()to send 0.0001 WETH to each wallet
   console.group(
     "\n5. Call multiTransferToken()to send 0.0001 WETH to each wallets"
   );
@@ -77,10 +75,10 @@ const main = async () => {
   const txApprove = await conWETH.approve(addrAirdrop, ethers.parseEther("1"));
   await txApprove.wait();
 
-  const tx2 = await conAirdrop.multiTransferToken(addrWETH, addresses, amounts);
+  const tx2 = await conAirdrop.multiTransferToken(addrWETH, wallets, amounts);
   await tx2.wait();
 
-  const balanceWETH2 = await conWETH.balanceOf(addresses[10]);
+  const balanceWETH2 = await conWETH.balanceOf(wallets[10]);
   console.log(`Balance of WETH after: ${ethers.formatEther(balanceWETH2)}`);
   printMyBalance();
   console.groupEnd();
