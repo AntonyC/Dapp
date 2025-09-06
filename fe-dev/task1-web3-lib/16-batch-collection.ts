@@ -32,7 +32,7 @@ const amount = ethers.parseEther("0.0001");
 console.log(`Sent amount: ${amount}`);
 console.groupEnd();
 const main = async () => {
-  // 4. Read balance of ETH and WETH
+  // Read balance of ETH and WETH
   console.group("\n3. Read balance of ETH and WETH");
   await printBalance("wallet", wallet.address);
   const balance = await printBalance("before", wallets[19].address);
