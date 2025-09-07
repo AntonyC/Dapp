@@ -21,7 +21,11 @@ async function main() {
   console.log("Random mnemonic: ", mnemonic);
   // Create HD base wallet "m / purpose' / coin_type' / account' / change"
   const basePath = "44'/60'/0'/0";
-  const baseWallet = ethers.HDNodeWallet.fromPhrase(mnemonic, basePath);
+  const baseWallet = ethers.HDNodeWallet.fromPhrase(
+    mnemonic,
+    undefined,
+    basePath
+  );
   console.log(baseWallet);
   console.groupEnd();
 
