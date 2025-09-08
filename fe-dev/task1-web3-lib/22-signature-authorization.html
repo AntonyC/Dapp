@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <h1 id="header">Sign in with Ethereum</h1>
+    <button class="sign">Sign</button>
+    <h2>Wallet address: <span class="showAccount"></span></h2>
+    <h2>Nonce: <span class="showNonce"></span></h2>
+    <h2>Signature: <span class="showSignature"></span></h2>
+    <h2>Is successful: <span class="showSignStatus"></span></h2>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.2.3/ethers.umd.min.js"></script>
+    <script type="module" src="./22-signature-authorization.js"></script>
+  </body>
+</html>
