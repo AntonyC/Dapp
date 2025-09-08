@@ -1,3 +1,7 @@
+// All data on Ethereum is public, so private variables are not private
+// Slot: A fixed-size storage space, the size is uint256 or 32 bytes
+// For a private variable without a getter function, you can still read its value through the slot index.
+
 import { ethers } from "ethers";
 import { provider } from "./utils-mainnet";
 
