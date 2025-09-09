@@ -10,7 +10,7 @@ import {
   abiAntonyC,
   addrAccount,
   addrAccount4,
-} from "./utils-sepolia.ts";
+} from "../utils-sepolia.ts";
 
 const privateKey = process.env.PK || "";
 const wallet = new ethers.Wallet(privateKey, provider);

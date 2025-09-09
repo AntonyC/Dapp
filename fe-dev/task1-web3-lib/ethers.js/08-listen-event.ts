@@ -6,7 +6,7 @@
 // contract.off("event_name", Listener)
 
 import { ethers } from "ethers";
-import { provider, addrAntonyC, abiAntonyC } from "./utils-sepolia.ts";
+import { provider, addrAntonyC, abiAntonyC } from "../utils-sepolia.ts";
 
 const conAntonyC = new ethers.Contract(addrAntonyC, abiAntonyC, provider);
 

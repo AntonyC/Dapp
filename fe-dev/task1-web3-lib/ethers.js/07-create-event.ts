@@ -5,7 +5,7 @@
 //     data : cannot be directly retrieved, but it can store more complex data structures
 
 import { ethers } from "ethers";
-import { provider, addrAntonyC, abiAntonyC } from "./utils-sepolia.ts";
+import { provider, addrAntonyC, abiAntonyC } from "../utils-sepolia.ts";
 
 const conAntonyC = new ethers.Contract(addrAntonyC, abiAntonyC, provider);
 

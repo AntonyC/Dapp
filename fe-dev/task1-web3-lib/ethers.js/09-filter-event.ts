@@ -9,7 +9,7 @@ import {
   addrAntonyC,
   abiAntonyC,
   addrAccount,
-} from "./utils-sepolia.ts";
+} from "../utils-sepolia.ts";
 
 const wallet = new ethers.Wallet(process.env.PK || "", provider);
 const conAntonyC = new ethers.Contract(addrAntonyC, abiAntonyC, wallet);

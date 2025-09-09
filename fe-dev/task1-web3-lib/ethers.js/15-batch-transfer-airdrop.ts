@@ -1,7 +1,7 @@
 // airdrop contract: perform batch transfers in a single transaction, saving gas fees.
 
 import { ethers } from "ethers";
-import { provider, addrAirdrop, addrWETH } from "./utils-sepolia.ts";
+import { provider, addrAirdrop, addrWETH } from "../utils-sepolia.ts";
 
 const wallet = new ethers.Wallet(process.env.PK || "", provider);
 

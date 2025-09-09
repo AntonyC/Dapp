@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { provider, addrBAYC, abiERC721 } from "./utils-mainnet.ts";
+import { provider, addrBAYC, abiERC721 } from "../utils-mainnet.ts";
 
 // Create ERC721 contract instance
 const conERC721 = new ethers.Contract(addrBAYC, abiERC721, provider);

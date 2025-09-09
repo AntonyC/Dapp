@@ -3,7 +3,7 @@
 // For a private variable without a getter function, you can still read its value through the slot index.
 
 import { ethers } from "ethers";
-import { provider } from "./utils-mainnet";
+import { provider } from "../utils-mainnet";
 
 // Arbitrum ERC20 bridge（mainnet）
 const addressBridge = "0x8315177aB297bA92A06054cE80a67Ed4DBd7ed3a"; // DAI Contract

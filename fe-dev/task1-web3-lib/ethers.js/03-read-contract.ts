@@ -2,7 +2,7 @@
 // read-write provider：const contract = new ethers.Contract(`address`, `abi`, `signer`);
 
 import { ethers } from "ethers";
-import { provider, addrAccount, addrAntonyC } from "./utils-sepolia.ts";
+import { provider, addrAccount, addrAntonyC } from "../utils-sepolia.ts";
 
 // https://sepolia.etherscan.io/address/0x6b7fA1d49C4aA2079c62e1c52cB7BF86aD91959F#code
 const abiAntonyC =

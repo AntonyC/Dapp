@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { providerSocket as provider } from "./utils-sepolia.ts";
+import { providerSocket as provider } from "../utils-sepolia.ts";
 
 let network = provider.getNetwork();
 network.then((res) =>

@@ -4,7 +4,7 @@
 //     where Ethereum’s native token is wrapped into an ERC20-compliant token through a smart contract.
 
 import { ethers } from "ethers";
-import { provider, addrWETH, addrAccount4 } from "./utils-sepolia.ts";
+import { provider, addrWETH, addrAccount4 } from "../utils-sepolia.ts";
 
 const privateKey = process.env.PK || "";
 const wallet = new ethers.Wallet(privateKey, provider);

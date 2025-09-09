@@ -3,7 +3,7 @@
 // The Wallet class inherits from the Signer class.
 
 import { ethers } from "ethers";
-import { provider } from "./utils-sepolia.ts";
+import { provider } from "../utils-sepolia.ts";
 
 // wallet1: created by random
 const walletRandom = ethers.Wallet.createRandom();
