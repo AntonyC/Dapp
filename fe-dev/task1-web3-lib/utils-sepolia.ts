@@ -4,9 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const SEPOLIA_HTTP_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
-const SEPLIA_SOCKET_URL = `wss://sepolia.infura.io/ws/v3/${process.env.INFURA_API_KEY}`;
+export const SEPLIA_SOCKET_URL = `wss://sepolia.infura.io/ws/v3/${process.env.INFURA_API_KEY}`;
 export const provider = new ethers.JsonRpcProvider(SEPOLIA_HTTP_URL);
-export const providerSocket = new ethers.WebSocketProvider(SEPLIA_SOCKET_URL);
 export const addrAccount = "0xf1C88C36Fb612Cf5D9c3f84F651bFE9049b1B927";
 export const addrAccount4 = "0x1329f875B2AF89dC6e1438bb8d232188F9474BA1";
 

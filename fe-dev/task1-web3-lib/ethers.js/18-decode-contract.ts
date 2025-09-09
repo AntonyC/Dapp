@@ -1,5 +1,7 @@
 import { ethers } from "ethers";
-import { providerSocket as provider } from "../utils-sepolia.ts";
+import { SEPLIA_SOCKET_URL } from "../utils-sepolia.ts";
+
+const provider = new ethers.WebSocketProvider(SEPLIA_SOCKET_URL);
 
 let network = provider.getNetwork();
 network.then((res) =>

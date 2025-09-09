@@ -5,7 +5,9 @@
 // provider.on("pending", listener)
 
 import { ethers } from "ethers";
-import { providerSocket as provider } from "../utils-sepolia.ts";
+import { SEPLIA_SOCKET_URL } from "../utils-sepolia.ts";
+
+const provider = new ethers.WebSocketProvider(SEPLIA_SOCKET_URL);
 
 console.log("\n1. Connect wss RPC");
 // 1. It’s recommended to use a WSS connection instead of HTTP when listening for events.
