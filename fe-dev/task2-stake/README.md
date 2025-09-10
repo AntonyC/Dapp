@@ -7,5 +7,6 @@ pnpm create wagmi
 pnpm i
 pnpm install framer-motion
 pnpm install react-icons
-
+pnpm add -D tailwindcss postcss autoprefixer
+    npx tailwindcss init -p
 ```
