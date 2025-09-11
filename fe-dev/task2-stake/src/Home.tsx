@@ -27,7 +27,7 @@ function Home() {
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent mb-2">
           MetaNode Stake
         </h1>
-        <p className="text-red-400 text-xl">Stake ETH to earn tokens</p>
+        <p className="text-gray-400 text-xl">Stake ETH to earn tokens</p>
       </motion.div>
     </div>
   );
