@@ -94,6 +94,10 @@
   line-height: 1.5;
 }
 
+.code {
+  background-color: lightgray;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
