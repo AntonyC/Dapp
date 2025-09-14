@@ -8,6 +8,8 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 
 import { config } from "../wagmi";
 
+import { Bounce, ToastContainer } from "react-toastify";
+
 const client = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -15,6 +17,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={client}>
         <RainbowKitProvider>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+          />
           <Component {...pageProps} />
         </RainbowKitProvider>
       </QueryClientProvider>
