@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 const Home = () => {
   return (
     <button
+      className="bg-red-500"
       onClick={() => {
         toast("I am a toast");
         toast.info("I am a toast");
