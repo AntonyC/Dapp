@@ -15,4 +15,11 @@ a {
   box-sizing: border-box;
 }
 
+.tech-grid {
+  @apply absolute inset-0 opacity-5 pointer-events-none;
+  background-image: linear-gradient(to right, #0ea5e9 1px, transparent 1px),
+    linear-gradient(to bottom, #0ea5e9 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 @import "tailwindcss";

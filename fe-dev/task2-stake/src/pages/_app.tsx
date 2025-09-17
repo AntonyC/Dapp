@@ -9,7 +9,7 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { config } from "../wagmi";
 
 import { Bounce, ToastContainer } from "react-toastify";
-import { Header } from "../components";
+import { Layout } from "../components";
 
 const client = new QueryClient();
 
@@ -31,8 +31,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             theme="light"
             transition={Bounce}
           />
-          <Header />
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
