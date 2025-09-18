@@ -7,3 +7,5 @@
 4. [react-icons](https://www.npmjs.com/package/react-icons)
 
 5. [Install Tailwind CSS with Next.js](https://tailwindcss.com/docs/installation/framework-guides/nextjs)
+
+6. Install 'PostCSS Language Support' to remove warnings like `Unknown at rule @applycss(unknownAtRules)`
