@@ -8,4 +8,6 @@
 
 5. [Install Tailwind CSS with Next.js](https://tailwindcss.com/docs/installation/framework-guides/nextjs)
 
-6. Install 'PostCSS Language Support' to remove warnings like `Unknown at rule @applycss(unknownAtRules)`
+6. Install `PostCSS Language Support` to remove warnings like `Unknown at rule @applycss(unknownAtRules)`
+
+7. Install `Tailwind CSS IntelliSense` to get autocomplete for Tailwind CSS classes
