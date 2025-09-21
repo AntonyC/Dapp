@@ -1,9 +1,8 @@
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import { motion } from "framer-motion";
 import { cn } from "../../utils/cn";
 
 interface CardProps {
-  children: ReactNode;
   className?: string;
   animate?: boolean;
   delay?: number;
@@ -14,7 +13,7 @@ export const Card = ({
   className,
   animate = true,
   delay = 0,
-}: CardProps) => {
+}: PropsWithChildren<CardProps>) => {
   const content = (
     <div className={cn("card group", className)}>
       <div className="tech-grid" />

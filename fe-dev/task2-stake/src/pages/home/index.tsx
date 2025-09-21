@@ -20,7 +20,12 @@ import { Button, Input, Card } from "../../components";
 const Home = () => {
   const stakeContract = useStakeContract();
   const { address, isConnected } = useAccount();
-  const { rewardsData, poolData, canClaim, refresh } = useRewards();
+  const {
+    rewardsData,
+    poolData,
+    canClaim,
+    refresh: refreshRewards,
+  } = useRewards();
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [claimLoading, setClaimLoading] = useState(false);
@@ -57,7 +62,7 @@ const Home = () => {
         toast.success("Stake successful!");
         setAmount("");
         setLoading(false);
-        refresh(); // 刷新奖励数据
+        refreshRewards();
         return;
       }
       toast.error("Stake failed!");
@@ -79,7 +84,7 @@ const Home = () => {
       if (res.status === "success") {
         toast.success("Claim successful!");
         setClaimLoading(false);
-        refresh(); // 刷新奖励数据
+        refreshRewards();
         return;
       }
       toast.error("Claim failed!");

@@ -1,5 +1,5 @@
 import Home from "./home/index";
-
+import styles from "../styles/Home.module.css";
 export default Home;
 
 // import { ConnectButton } from "@rainbow-me/rainbowkit";

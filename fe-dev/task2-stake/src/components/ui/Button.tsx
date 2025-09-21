@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import { cn } from "../../utils/cn";
 
 interface ButtonProps {
-  children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   loading?: boolean;
@@ -22,7 +21,7 @@ export const Button = ({
   type = "button",
   variant = "primary",
   fullWidth = false,
-}: ButtonProps) => {
+}: PropsWithChildren<ButtonProps>) => {
   const baseStyles =
     "flex items-center justify-center space-x-2 transition-all duration-300";
 
