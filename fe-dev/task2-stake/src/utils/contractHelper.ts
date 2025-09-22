@@ -1,9 +1,9 @@
 import {
-  Abi,
-  Address,
-  GetContractReturnType,
-  PublicClient,
-  WalletClient,
+  type Abi,
+  type Address,
+  type GetContractReturnType,
+  type PublicClient,
+  type WalletClient,
   getContract as viemGetContract,
 } from "viem";
 import { defaultChainId } from "./wagmi";
