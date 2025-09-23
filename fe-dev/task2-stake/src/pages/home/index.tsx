@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useStakeContract } from "../../hooks/useContract";
 import { useRewards } from "../../hooks";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Pid } from "../../utils";
 import { useAccount, useWalletClient, useBalance } from "wagmi";
 import { parseUnits } from "viem";

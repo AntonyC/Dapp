@@ -58,7 +58,7 @@ export const useRewards = () => {
     }
   }, [stakeContract, address, isConnected]);
 
-  // 获取MetaNode代币地址
+  // get MetaNode address
   const fetchMetaNodeAddress = useCallback(async () => {
     if (!stakeContract) return;
 
@@ -78,7 +78,7 @@ export const useRewards = () => {
     try {
       setLoading(true);
 
-      // 获取用户数据
+      // get user data
       const userData = await retryWithDelay(
         () => stakeContract.read.user([Pid, address]) as Promise<UserData>
       );
@@ -97,7 +97,7 @@ export const useRewards = () => {
       });
     } catch (error) {
       console.error("Failed to fetch rewards data:", error);
-      // 设置默认值
+      // set default value
       setRewardsData({
         pendingReward: "0",
         stakedAmount: "0",
@@ -108,7 +108,7 @@ export const useRewards = () => {
     }
   }, [stakeContract, address, isConnected]);
 
-  // 初始加载
+  // init
   useEffect(() => {
     if (isConnected && address) {
       fetchRewardsData();
@@ -123,33 +123,33 @@ export const useRewards = () => {
     fetchMetaNodeAddress,
   ]);
 
-  // 定期刷新数据（每60秒）
+  // Refresh（every 60s）
   useEffect(() => {
     if (!isConnected || !address) return;
 
     const interval = setInterval(() => {
       fetchRewardsData();
-    }, 60000); // 60秒
+    }, 60000); // 60s
 
     return () => clearInterval(interval);
   }, [isConnected, address, fetchRewardsData]);
 
-  // 手动刷新
+  // refresh
   const refresh = useCallback(() => {
     fetchRewardsData();
   }, [fetchRewardsData]);
 
-  // 添加MetaNode代币到MetaMask
+  // add MetaNode to MetaMask
   const addMetaNodeToWallet = useCallback(async () => {
     if (!metaNodeAddress) {
-      console.error("MetaNode地址未获取到");
+      console.error("MetaNode address is not defined");
       return false;
     }
 
     try {
       return await addMetaNodeToMetaMask(metaNodeAddress);
     } catch (error) {
-      console.error("添加MetaNode到钱包失败:", error);
+      console.error("failed to add MetaNode to metamask:", error);
       return false;
     }
   }, [metaNodeAddress]);
